@@ -1,0 +1,6 @@
+<template name="foot">
+  <view class="foot-wrap">
+    <view class="desc">All Copyright © 2019 版权所有 无锡新三洲</view>
+    <view class="version">技术支持：盘古ERP1.0</view>
+  </view>
+</template>

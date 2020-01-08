@@ -1,0 +1,16 @@
+@import './nav.wxss';
+.foot-wrap {
+  position: fixed;
+  bottom: 42px;
+  width: 100%;
+  padding: 20rpx 0;
+  text-align: center;
+}
+.desc {
+  color: #bcbcbc;
+  font-size: 24rpx;
+}
+.version {
+  color: #c9c7c7;
+  font-size: 20rpx;
+}

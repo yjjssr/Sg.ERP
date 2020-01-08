@@ -1,0 +1,5 @@
+<!--pages/operate/evaluate/evaluate.wxml-->
+<cu-custom bgColor="bg-gradual-pink" isBack="{{true}}">
+  <view slot="content">预评估</view>
+</cu-custom>
+<text>pages/operate/evaluate/evaluate.wxml</text>
