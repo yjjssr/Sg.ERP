@@ -1,1 +1,122 @@
 /* pages/operate/evaluate/evaluate.wxss */
+
+.scrollPage {
+  height: 100vh;
+}
+
+.scrollPage-withTab{
+   padding-bottom: 100rpx;
+}
+.movable-area-block{
+  height: 100%;
+  width: auto;
+}
+.movable-area-BFC{
+  display: inline-block;
+  /* min-height: 100%; */
+  height: auto;
+  width: 100%;
+}
+
+movable-view {
+  display: inline-block;
+  height: 35px;
+  width: 35px;
+}
+
+/* 去除搜索图标 */
+
+.van-icon-search {
+  font-size: 0 !important;
+}
+
+.icon {
+  background-color: #07c160;
+  border-radius: 50%;
+  padding: 10rpx;
+  margin: 10rpx;
+}
+
+.searchWrap {
+  padding-bottom: 50rpx !important;
+}
+
+.my-button {
+  width: 100% !important;
+  margin: 10rpx;
+  padding: 0;
+}
+
+.text-title {
+  display: inline-block;
+  width: 165rpx;
+  text-align: right;
+  margin-right: 30rpx;
+}
+
+.disaDetailWrap {
+  padding-left: 0 !important;
+}
+
+/* .disaDetailSearchActionWrap:before {
+  content: '已评估';
+} */
+.searchRightIconWrap:before {
+  content: '已评估';
+}
+
+.disaDetailSearchActionWrap {
+  display: flex;
+}
+
+.disaDetailSwitch {
+  margin-left: 10rpx;
+}
+
+.disaDetailSearch {
+  padding: 0 20rpx;
+  margin-left: 20rpx;
+}
+
+.structureFromWrap {
+  flex-direction: column;
+}
+
+.sidebarWrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 30rpx;
+}
+
+.my-sidebar {
+  background-color: var(--sidebar-background-color, #fafafa);
+  height: 100%;
+}
+
+.my-collapse-wrap {
+  width: 100%;
+}
+.my-tabbar-label{
+  display: flex;
+align-items: center;
+flex: 1;
+justify-content: center;
+font-size: 30rpx;
+
+}
+.my-tabbar-label-text{
+  padding: 0 30rpx;
+margin-right: 30rpx;
+
+}
+.my-collapse-label{
+  /* display: flex;
+  align-items: center; */
+  margin-right: 15rpx;
+}
+.my-collapse-label-text{
+  padding:0 30rpx;
+  color: var(--cell-text-color,#323233);
+
+}

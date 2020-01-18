@@ -1,0 +1,15 @@
+<!--pages/register/register.wxml-->
+<cu-custom bgColor="bg-gradual-pink">
+  <view slot="content">注册</view>
+</cu-custom>
+<form bindsubmit="formSubmit">
+  <view class="form-wrap">
+    <van-field wx:if="{{!isCertification}}" value="{{phoneNumber}}" bind:change="onPhoneChange" label="手机号" left-icon="phone-o" placeholder="请输入手机号"  error-message="{{phoneErrorMessage}}" />
+    <view class="btn-area">
+          <!-- <button   type="primary" open-type="getUserInfo" bindgetuserinfo="getUserInfo">验证1</button> -->
+      <button wx:if="{{!hasUserInfo}}"  type="primary" open-type="getUserInfo" bindgetuserinfo="getUserInfo">验证</button>
+       <button wx:if="{{hasUserInfo}}" type="primary" bindtap="registerAndCheck">验证</button>
+    </view>
+  </view>
+</form>
+<van-toast id="van-toast" />

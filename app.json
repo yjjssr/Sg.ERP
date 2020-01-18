@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/logs/logs",
-    "pages/operate/evaluate/evaluate"
+    "pages/operate/evaluate/evaluate",
+    "pages/register/register"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -12,7 +13,16 @@
     "navigationStyle": "custom"
   },
   "usingComponents": {
-    "cu-custom": "/colorui/components/cu-custom"
+    "cu-custom": "/colorui/components/cu-custom",
+    "van-icon": "/miniprogram_npm/@vant/weapp/icon/index",
+    "van-search": "/miniprogram_npm/@vant/weapp/search/index",
+    "van-toast": "/miniprogram_npm/@vant/weapp/toast/index",
+    "van-uploader": "/miniprogram_npm/@vant/weapp/uploader/index",
+    "van-sidebar": "/miniprogram_npm/@vant/weapp/sidebar/index",
+    "van-sidebar-item": "/miniprogram_npm/@vant/weapp/sidebar-item/index",
+    "van-collapse": "/miniprogram_npm/@vant/weapp/collapse/index",
+    "van-collapse-item": "/miniprogram_npm/@vant/weapp/collapse-item/index"
+   
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json"

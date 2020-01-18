@@ -1,7 +1,8 @@
 @import './nav.wxss';
 .foot-wrap {
   position: fixed;
-  bottom: 42px;
+  /* bottom: 42px; */
+  bottom:calc(100rpx + env(safe-area-inset-bottom) / 2);
   width: 100%;
   padding: 20rpx 0;
   text-align: center;

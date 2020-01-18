@@ -1,1 +1,15 @@
 /* pages/about/home/home.wxss */
+
+.container-wrap {
+  height: 368rpx;
+  min-height: 100rpx;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+}
+.my-picker{
+  padding-left: 0;
+  padding-right: 0;
+}

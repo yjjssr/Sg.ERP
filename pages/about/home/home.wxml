@@ -1,2 +1,70 @@
 <!--pages/about/home/home.wxml-->
-<text>pages/about/home/home.wxml</text>
+<!-- <text>pages/about/home/home.wxml</text> -->
+<!-- <cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">背景颜色</view>
+</cu-custom> -->
+
+<view class="bg-gradual-pink padding radius text-center light container-wrap">
+  <view class="cu-avatar xl round" style="background-image:url({{userInfo.avatarUrl}});"></view>
+  <view class="margin-top-sm text-Abc">{{userInfo.nickName}}</view>
+</view>
+<view class="cu-list menu sm-border card-menu margin-top">
+  <view class="cu-item">
+    <view class="content">
+      <text class="cuIcon-people text-grey"></text>
+      <text class="text-grey">{{customInfo.User_Name}}</text>
+    </view>
+    <view class="action">
+      <view class="cu-tag round bg-orange light">姓名</view>
+    </view>
+  </view>
+  <view class="cu-item">
+    <view class="content">
+      <text class="cuIcon-barcode text-grey"></text>
+      <text class="text-grey">{{customInfo.User_EMPNO}}</text>
+    </view>
+    <view class="action">
+      <view class="cu-tag round bg-orange light">工号</view>
+    </view>
+  </view>
+  <view class="cu-item">
+    <view class="content">
+      <text class="cuIcon-phone text-grey"></text>
+      <text class="text-grey">{{customInfo.User_PhoneNo}}</text>
+    </view>
+    <view class="action">
+      <view class="cu-tag round bg-orange light">电话</view>
+    </view>
+  </view>
+  <view class="cu-item arrow">
+    <view class="content">
+      <text class="cuIcon-group text-grey"></text>
+      <!-- <text class="text-grey">{{customInfo.reList[0].Org_FullName}}</text> -->
+     
+    </view>
+    <view class="action" style="width:{{organizationPicker.length!=0?'100%':''}}">
+     <view wx:if="{{organizationPicker.length==0}}" class="cu-tag round bg-orange light">组织</view>
+     <picker  bindchange="PickerChange" value="{{index}}" range-key="Org_FullName" range="{{organizationPicker}}">
+        <view class="picker text-grey padding my-picker" >
+          {{organizationPicker[index].Org_FullName}}
+          <view  class="cu-tag round bg-orange light fr">组织</view>
+        </view>
+      </picker>
+    </view>
+    <!-- <view class="action">
+      <view class="cu-tag round bg-orange light">组织</view>
+    </view> -->
+  </view>
+</view>
+<view class="cu-modal drawer-modal justify-start {{modalName?'show':''}}" bindtap="hideModal">
+  <view class="cu-dialog basis-lg" catchtap style="top:{{StatusBar}}px;height:calc(100vh)">
+    <view class="cu-list menu text-left">
+      <view class="cu-item" wx:for="{{customInfo.reList}}" wx:key="Org_ID">
+        <view class="content">
+          <view>{{item.Org_FullName}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

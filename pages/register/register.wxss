@@ -1,0 +1,22 @@
+/* pages/register/register.wxss */
+.form-wrap {
+  width: 80%;
+  background-color: #fff;
+  padding: 30rpx 20rpx;
+  position: absolute;
+  top: 50%;
+  border-radius: 20rpx;
+  left: 0;
+  right: 0;
+  margin: auto;
+  transform: translateY(-50%);
+}
+.btn-area {
+  padding: 30rpx 20rpx 0;
+}
+
+.btn-area button {
+  width: 100%;
+  /* background-image: linear-gradient(#ec008c, #6739b6); */
+  color: #fff;
+}
