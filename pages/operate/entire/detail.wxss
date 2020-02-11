@@ -1,0 +1,7 @@
+/* pages/operate/entire/detail.wxss */
+.my-padding{
+  padding-right: 20rpx!important;
+}
+.my-radius{
+  border-radius: 10rpx;
+}

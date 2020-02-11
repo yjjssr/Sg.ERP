@@ -3,7 +3,10 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/operate/evaluate/evaluate",
-    "pages/register/register"
+    "pages/register/register",
+    "pages/operate/entire/entire",
+    "pages/operate/entire/detail",
+    "pages/operate/entire/schedule"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -22,7 +25,6 @@
     "van-sidebar-item": "/miniprogram_npm/@vant/weapp/sidebar-item/index",
     "van-collapse": "/miniprogram_npm/@vant/weapp/collapse/index",
     "van-collapse-item": "/miniprogram_npm/@vant/weapp/collapse-item/index"
-   
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json"

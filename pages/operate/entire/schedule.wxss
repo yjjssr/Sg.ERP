@@ -1,0 +1,17 @@
+/* pages/operate/entire/schedule.wxss */
+/* .my-time{
+  width: atuo!important;
+  display: inline-block!important;
+} */
+.cu-timeline .cu-time{
+  width: auto;
+  text-align: start;
+  padding-left: 8rpx;
+}
+.my-flex{
+  display: flex!important;
+  justify-content: space-between;
+}
+.my-button{
+  width: auto!important;
+}

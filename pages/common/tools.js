@@ -1,6 +1,6 @@
 export default {
   parseTreeData(list, key, parentKey, nameKey) {
-    
+
     //创建一个对象命名为map
     let map = {}
     //通过遍历把list中的元素放到map对象中
@@ -48,37 +48,46 @@ export default {
     }, [])
     return data
   },
-  flatten(arr){
+  flatten(arr) {
     return arr.reduce((result, item) => {
       return result.concat(Array.isArray(item.children) ? this.flatten(item.children) : item);
     }, []);
   },
-  addParent(self, parentKey, noRepeatkey,map,level){
-    if (map&&map[self[parentKey]] != undefined) {
-        // map[item.ParentID].children ? map[item.ParentID].children.push(item) : map[item.ParentID].children = [item]
-        if (level){
-          if (!self[level]){
-            map[self[parentKey]].addPrent = true
-          }else if(self[level]==2){
-            self.addChildren=true
-          }
-
+  addParent(self, parentKey, noRepeatkey, map, level) {
+    if (map && map[self[parentKey]] != undefined) {
+      // map[item.ParentID].children ? map[item.ParentID].children.push(item) : map[item.ParentID].children = [item]
+      if (level) {
+        if (!self[level]) {
+          map[self[parentKey]].addPrent = true
+        } else if (self[level] == 2) {
+          self.addChildren = true
         }
-        
-        if (map[self[parentKey]].children) {
-          if (map[self[parentKey]].children.filter(item => item[noRepeatkey] == self[noRepeatkey]).length == 0) {
-            map[self[parentKey]].children.push(self)
-          }
 
-        } else {
-          map[self[parentKey]].children = [self]
-        }
-      }else{
-        console.log("map不存在或对应的值不存在")
       }
-    
+
+      if (map[self[parentKey]].children) {
+        if (map[self[parentKey]].children.filter(item => item[noRepeatkey] == self[noRepeatkey]).length == 0) {
+          map[self[parentKey]].children.push(self)
+        }
+
+      } else {
+        map[self[parentKey]].children = [self]
+      }
+    } else {
+      console.log("map不存在或对应的值不存在")
+    }
+
   },
-  removeChild(){
-    
+  decDateStringCompare(property) {
+    return function(a, b) {
+      // var value1 = new Date(Date.parse(a[property].replace(/-/g, "/")));
+      // var value2 = new Date(Date.parse(b[property].replace(/-/g, "/")));
+      let value1 = new Date(a[property]).getTime();
+      let value2 = new Date(b[property]).getTime();
+      return value2 - value1; // value1-value2是从小到大    如果是从大到小 return value2 -value1
+    }
   }
+  // removeChild(){
+
+  // }
 }

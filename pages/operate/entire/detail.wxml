@@ -1,0 +1,101 @@
+<!--pages/operate/entire/detail.wxml-->
+<cu-custom bgColor="bg-gradual-pink" isBack="{{true}}">
+  <view slot="content">整车详情</view>
+</cu-custom>
+<view>
+  <view class="cu-list menu sm-border card-menu margin-top">
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">号码号牌</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.VA_PlateNo?detailObj.VA_PlateNo:""}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">变速箱类型</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.VA_GearboxType?detailObj.VA_GearboxType:""}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">车辆类型</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.VA_VehicleType?detailObj.VA_VehicleType:""}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">排量</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.VA_Displacement?detailObj.VA_Displacement:""}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">品牌型号</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.VA_Model?detailObj.VA_Model:""}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">年份</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.VA_YearType?detailObj.VA_YearType:""}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">报废证明</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.Scrapflag?detailObj.Scrapflag:""}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">评估状态</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.ValuationState?detailObj.ValuationState:""}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">生产状态</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.ProductState?detailObj.ProductState:""}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">报废状态</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.ScrpState?detailObj.ScrpState:""}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">
+      图片
+    </view>
+
+  </view>
+  <view class="cu-list grid col-3 no-border">
+    <view class="cu-item my-padding" wx:for="{{picturesList}}" wx:key="index" data-cur="{{item}}" bindtap="previewImage">
+      <view class="bg-img my-radius" style="background-image: url({{item}});height:80px;">
+      </view>
+    </view>
+  </view>
+</view>
+<van-toast id="van-toast" />

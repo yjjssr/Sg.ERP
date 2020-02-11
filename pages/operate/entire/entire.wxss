@@ -1,0 +1,28 @@
+/* pages/operate/entire/entire.wxss */
+
+.btn-area {
+  display: flex;
+  padding: 0 15rpx;
+}
+
+.my-submit {
+  margin: 15rpx;
+  flex: 1;
+}
+
+.content {
+  line-height: normal !important;
+}
+
+/* .text-cut {
+  white-space: normal;
+} */
+.my-top{
+  margin-top:8rpx;
+}
+.my-action{
+  width: 120rpx!important;
+}
+.my-button{
+  width: 100%!important;
+}

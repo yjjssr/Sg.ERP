@@ -21,6 +21,7 @@ Component({
       icon: 'evaluate'
     }, {
       title: '查整车',
+      name:'entire',
       color: 'blue',
       icon: 'explore'
     }, {

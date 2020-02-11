@@ -1,0 +1,16 @@
+<!--pages/operate/entire/schedule.wxml-->
+<cu-custom bgColor="bg-gradual-pink" isBack="{{true}}">
+  <view slot="content">整车进度</view>
+</cu-custom>
+<view  class="cu-timeline" wx:for="{{timeLineList}}" wx:key="dateIndex" wx:for-item="dateItem" wx:for-index="dateIndex">
+  <view class="cu-time">{{dateItem.date}}</view>
+  <view class="cu-item  {{dateIndex==0&&index==0?'cuIcon-noticefill text-green':''}}" wx:for="{{dateItem.detail}}" wx:key="index">
+    <view class="content {{dateIndex==0&&index==0?'bg-green shadow-blur':''}} my-flex">
+      <view>
+        <text>{{item.time+'  '}}</text>{{item.title}}</view>
+      <!-- 需要查看凭证时再放出否则隐藏 -->
+      <!-- <view><button class="cu-btn round sm bg-cyan my-button">查看凭证</button></view> -->
+    </view>
+  </view>
+</view>
+<van-toast id="van-toast" />

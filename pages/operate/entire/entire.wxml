@@ -1,0 +1,56 @@
+<!--pages/operate/entire/entire.wxml-->
+<cu-custom bgColor="bg-gradual-pink" isBack="{{true}}">
+  <view slot="content">查整车</view>
+</cu-custom>
+<view>
+  <view class="cu-card case">
+    <view class="cu-item shadow">
+      <form bindsubmit="formSubmit">
+        <view class="cu-form-group">
+          <view class="title">品牌</view>
+          <input placeholder="请输入车辆品牌" name="BrandName"></input>
+        </view>
+        <view class="cu-form-group">
+          <view class="title">车系</view>
+          <input placeholder="请输入车辆车系" name="FamilyName"></input>
+        </view>
+        <view class="cu-form-group">
+          <view class="title">VIN码</view>
+          <input placeholder="请输入车辆VIN码或扫描" value="{{searchParam.VIN}}" name="VIN"></input>
+          <view bindtap="onVinScan">
+            <van-icon name="scan" size="20" />
+          </view>
+        </view>
+        <view class="btn-area">
+          <button formType="submit" class="my-submit cu-btn bg-blue" >搜索</button>
+        </view>
+      </form>
+    </view>
+  </view>
+
+  <view class="cu-list menu-avatar">
+    <view class="cu-item" wx:for="{{previewList}}" wx:key="index" data-vin="{{item.VA_VIN}}" bindtap="navigatorToDetail">
+      <view class="cu-avatar round lg" style="background-image:url({{item.VP_LFPic?item.VP_LFPic:'../../../images/idcard.png'}});"></view>
+      <view class="content">
+        <view class="text-grey">{{item.VA_VehicleType?item.VA_VehicleType:'暂无'}}{{item.VA_PlateNo}}</view>
+        <view class="text-gray text-sm">
+          <!-- <text > -->
+							{{item.VA_VehicleName?item.VA_VehicleName:''}}
+          <!-- </text> -->
+        </view>
+        <view class="text-gray text-xs my-top">{{item.VA_CreatedTime?item.VA_CreatedTime:''}}</view>
+      </view>
+      <view class="action my-action">
+        <!-- <view class="text-grey text-xs">{{item.VA_CreatedTime?item.VA_CreatedTime:''}}</view> -->
+        <button class="cu-btn round sm bg-cyan my-button " data-vin="{{item.VA_VIN}}" catchtap="onSchedule">进度</button>
+        <!-- <button class="cu-btn round">圆角</button> -->
+      </view>
+    </view>
+  </view>
+</view>
+<van-toast id="van-toast" />
+<view class='cu-load load-modal' wx:if="{{loadModal}}">
+  <!-- <view class='cuIcon-emojifill text-orange'></view>
+  <image src='/images/logo.png' class='png' mode='aspectFit'></image> -->
+  <view class='gray-text'>加载中...</view>
+</view>
