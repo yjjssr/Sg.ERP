@@ -1,0 +1,15 @@
+/* pages/operate/portion/portion.wxss */
+.btn-area{
+  display: flex;
+  margin: 0 20rpx 20rpx;
+
+}
+.my-submit{
+  flex:1
+}
+.cu-list.menu .cu-item .content view:first-child{
+  margin: 20rpx 0;
+}
+.cu-list.menu .cu-item .content view:not(:first-child){
+   margin: 10rpx 0;
+}

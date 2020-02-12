@@ -1,0 +1,26 @@
+.my-content{
+  min-width: 120rpx;
+  margin-right: 20rpx;
+}
+.my-action{
+  margin-left: 20rpx;
+  min-width: 120rpx;
+}
+.my-copy{
+  width: auto!important;
+ 
+}
+
+.content-area{
+margin-bottom: 120rpx;
+}
+.cu-form-group{
+  padding-top: 30rpx;
+  margin-top: 30rpx;
+}
+.btn-area{
+  position: fixed;
+  bottom:0;
+  width: 100%;
+  
+}

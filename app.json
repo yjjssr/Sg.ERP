@@ -6,7 +6,9 @@
     "pages/register/register",
     "pages/operate/entire/entire",
     "pages/operate/entire/detail",
-    "pages/operate/entire/schedule"
+    "pages/operate/entire/schedule",
+    "pages/operate/portion/portion",
+    "pages/operate/portion/detail"
   ],
   "window": {
     "backgroundTextStyle": "light",

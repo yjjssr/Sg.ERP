@@ -1,0 +1,132 @@
+<!--pages/operate/portion/detail.wxml-->
+<cu-custom bgColor="bg-gradual-pink" isCustom="{{true}}">
+  <view slot="content">配件详情</view>
+</cu-custom>
+<view class="content-area">
+  <view class="cu-list menu sm-border card-menu margin-top">
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">配件条码</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.APA_Barcode?detailObj.APA_Barcode:""}}</text>
+      </view>
+      <view class="action my-action" wx:if="{{detailObj.APA_Barcode}}"  bindtap='copyText' data-text="{{detailObj.APA_Barcode}}">
+        <button class="cu-btn round bg-green shadow my-copy" >复制</button>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">OE号</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.APA_OEMNo?detailObj.APA_OEMNo:""}}</text>
+      </view>
+      <view class="action my-action" wx:if="{{detailObj.APA_OEMNo}}"  bindtap='copyText' data-text="{{detailObj.APA_OEMNo}}">
+        <button class="cu-btn round bg-green shadow my-copy" >复制</button>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">配件名称</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.APA_Name?detailObj.APA_Name:""}}</text>
+      </view>
+      <view class="action my-action" wx:if="{{detailObj.APA_Name}}"  bindtap='copyText' data-text="{{detailObj.APA_Name}}">
+        <button class="cu-btn round bg-green shadow my-copy" >复制</button>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content my-content">
+        <text class="text-grey">车辆俗称</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.VehicleName?detailObj.VehicleName:""}}</text>
+      </view>
+      <view class="action my-action" wx:if="{{detailObj.VehicleName}}"  bindtap='copyText' data-text="{{detailObj.VehicleName}}">
+        <button class="cu-btn round bg-green shadow my-copy" >复制</button>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">销售指导价</text>
+      </view>
+      <view>
+        <text class="text-grey text-price">{{detailObj.APPT_Price?detailObj.APPT_Price:""}}</text>
+      </view>
+      <view class="action my-action" wx:if="{{detailObj.APPT_Price}}"  bindtap='copyText' data-text="{{detailObj.APPT_Price}}">
+        <button class="cu-btn round bg-green shadow my-copy" >复制</button>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">状态</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.APA_StatusName?detailObj.APA_StatusName:""}}</text>
+      </view>
+      <view class="action my-action" wx:if="{{detailObj.APA_StatusName}}"  bindtap='copyText' data-text="{{detailObj.APA_StatusName}}">
+        <button class="cu-btn round bg-green shadow my-copy" >复制</button>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">拆解人员</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.EmpName?detailObj.EmpName:""}}</text>
+      </view>
+      <view class="action my-action" wx:if="{{detailObj.EmpName}}"  bindtap='copyText' data-text="{{detailObj.EmpName}}">
+        <button class="cu-btn round bg-green shadow my-copy" >复制</button>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">仓库仓位</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.WH_Name?detailObj.WH_Name:""}}</text>
+      </view>
+      <view class="action my-action" wx:if="{{detailObj.WH_Name}}"  bindtap='copyText' data-text="{{detailObj.WH_Name}}">
+        <button class="cu-btn round bg-green shadow my-copy" >复制</button>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">入库时间</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.inTime?detailObj.inTime:""}}</text>
+      </view>
+      <view class="action my-action" wx:if="{{detailObj.inTime}}"  bindtap='copyText' data-text="{{detailObj.inTime}}">
+        <button class="cu-btn round bg-green shadow my-copy" >复制</button>
+      </view>
+    </view>
+
+  </view>
+  <form>
+    <view class="cu-form-group">
+      <view class="grid col-3 grid-square flex-sub">
+        <block wx:for="{{9}}" wx:key="*this">
+          <view class="bg-img" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
+            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}">
+              <text class="cuIcon-close"></text>
+            </view>
+          </view>
+          <view class="solids" bindtap="ChooseImage" wx:if="{{!picturesList[index]||picturesList.length<9}}" data-index="{{index}}">
+            <text class="cuIcon-cameraadd"></text>
+          </view>
+        </block>
+      </view>
+
+    </view>
+    <view class="padding bg-white">
+      <button class="cu-btn block bg-blue margin-tb-sm lg" style="width:100%" bindtap="Update">更新</button>
+    </view>
+
+  </form>
+</view>
+
+<van-toast id="van-toast" />

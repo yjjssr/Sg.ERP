@@ -1,0 +1,57 @@
+<cu-custom bgColor="bg-gradual-pink" isBack="{{true}}">
+  <view slot="content">查配件</view>
+</cu-custom>
+<view>
+  <view class="cu-card">
+    <view class="cu-item shadow">
+      <form bindsubmit="formSubmit">
+        <view class="cu-form-group">
+          <view class="title">配件名称</view>
+          <input placeholder="请输入配件名称" name="PartName"></input>
+        </view>
+        <view class="cu-form-group">
+          <view class="title">车辆俗称</view>
+          <input placeholder="请输入车辆俗称" name="Keywords"></input>
+        </view>
+        <view class="cu-form-group">
+          <view class="title">条码</view>
+          <input placeholder="请输入车辆VIN码或配件码" value="{{searchParam.VIN}}" name="VIN"></input>
+          <view bindtap="onVinScan">
+            <van-icon name="scan" size="20" />
+          </view>
+        </view>
+        <view class="cu-form-group">
+          <view class="title">库存</view>
+          <picker bindchange="bindPickerChange" value="{{repertoryIndex}}" range="{{repertoryList}}" range-key="name">
+            <view class="picker">
+              {{repertoryList[repertoryIndex].name}}
+            </view>
+          </picker>
+        </view>
+        <view class="btn-area">
+          <button formType="submit" class="my-submit cu-btn bg-blue">搜索</button>
+        </view>
+      </form>
+    </view>
+  </view>
+  <view class="cu-list menu">
+    <view class="cu-item" wx:for="{{previewList}}" wx:key="APA_ID" data-apaid="{{item.APA_ID}}" data-barcode="{{item.APA_Barcode}}" bindtap="navigatorToDetail">
+      <view class="content">
+      <view class="text-xl"><text class="text-black text-bold">{{item.APA_Name?item.APA_Name:"暂无"}} <text class="text-price text-red">{{item.APPT_Price?item.APPT_Price:""}}</text></text></view>
+      <view class="text-lg text-grey">{{item.WH_Name?item.WH_Name:"暂无"}} {{item.WHB_Name?item.WHB_Name:"暂无"}} {{item.AI_Qty?item.AI_Qty:"暂无"}}</view>
+      <view class="text-sm text-grey">{{item.VA_VehicleName?item.VA_VehicleName:""}}</view>
+      <view class="text-xs text-gray ">{{item.APA_Barcode?item.APA_Barcode:""}}/{{item.APA_OEMNo?item.APA_OEMNo:"暂无"}}</view>
+      </view>
+      <view class="action">
+       <view class="cu-tag round bg-orange">{{item.APA_StatusName?item.APA_StatusName:""}}</view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<van-toast id="van-toast" />
+<view class='cu-load load-modal' wx:if="{{loadModal}}">
+  <!-- <view class='cuIcon-emojifill text-orange'></view>
+  <image src='/images/logo.png' class='png' mode='aspectFit'></image> -->
+  <view class='gray-text'>加载中...</view>
+</view>

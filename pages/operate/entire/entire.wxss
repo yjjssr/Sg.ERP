@@ -26,3 +26,11 @@
 .my-button{
   width: 100%!important;
 }
+.cu-list.menu-avatar .cu-item{
+  border-bottom: 1rpx solid #ddd;
+ 
+ 
+}
+.cu-list.menu-avatar .cu-item .content view{
+  margin: 5rpx 0;
+}

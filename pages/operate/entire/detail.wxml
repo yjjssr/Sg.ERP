@@ -1,5 +1,5 @@
 <!--pages/operate/entire/detail.wxml-->
-<cu-custom bgColor="bg-gradual-pink" isBack="{{true}}">
+<cu-custom bgColor="bg-gradual-pink" isCustom="{{true}}">
   <view slot="content">整车详情</view>
 </cu-custom>
 <view>

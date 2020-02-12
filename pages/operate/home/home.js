@@ -26,6 +26,7 @@ Component({
       icon: 'explore'
     }, {
       title: '查配件',
+      name:'portion',
       color: 'purple',
       icon: 'explore'
     }, {
