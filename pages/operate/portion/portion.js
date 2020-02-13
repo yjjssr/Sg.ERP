@@ -26,7 +26,7 @@ Page({
     repertoryIndex:0,
     loadModal: false,
     searchParam:{//查询条件
-      OrgID:wx.getStorageSync("orgId"),
+      OrgID:'',
       PageIndex: 1,
       PageSize: 12,
       PartName:'',//配件名称
@@ -35,6 +35,12 @@ Page({
       isZeorQty:'1'//1表示有库存，0表示无库存
     },
     previewList:[]
+  },
+  onLoad:function(){
+    this.setData({
+      "searchParam.OrgID": wx.getStorageSync("orgId")
+    })
+    
   },
 
   /**
@@ -65,14 +71,26 @@ Page({
     
   
   },
+  changeParam(e){
+    let _this=this
+    let {key}= e.currentTarget.dataset
+    let value=e.detail.value
+    _this.setData({
+      [`searchParam.${key}`]:value
+    })
+    
+  },
   bindPickerChange(e){
-    this.setData({
+    let _this=this
+    _this.setData({
       repertoryIndex: e.detail.value
     })
+    _this.formSubmit()
+
+    
   },
   onVinScan() {
     let _this = this
-
     wx.scanCode({
       success: (res) => {
         _this.setData({
@@ -80,17 +98,26 @@ Page({
         })
       }
     })
+   
   },
   formSubmit(e){
     let _this = this
+    _this.setData({
+      loadModal: true
+    })
     let isZeorQty = _this.data.repertoryList[_this.data.repertoryIndex].value
-    let param = { ..._this.data.searchParam, ...e.detail.value, PageIndex: 1, isZeorQty}
+    // let param = { ..._this.data.searchParam, ...e.detail.value, PageIndex: 1, isZeorQty}
+    let param = { ..._this.data.searchParam, PageIndex: 1, isZeorQty }
     _this.setData({
       searchParam: param
     })
     getAutoPartsList(param).then(data=>{
+      if(data.length==0){
+        Toast.fail('暂无数据');
+      }
       _this.setData({
-        previewList:data
+        previewList:data,
+        loadModal:false
       })
     })
   },

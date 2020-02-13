@@ -31,7 +31,8 @@ Page({
     },
     previewList: [], //预览列表
     timelineList: [], //时间轴列表
-    loadModal:false
+    loadModal:false,
+    isSerachModal:false
 
 
   },
@@ -80,15 +81,23 @@ Page({
     let _this = this
     let param = { ..._this.data.searchParam, ...e.detail.value, PageIndex:1}
     _this.setData({
-      searchParam: param
+      searchParam: param,
+      loadModal:true,
+      isSerachModal:true
     })
+    
     searchVehicleArchiveList(_this.data.searchParam).then(data => {
+      if (data.length == 0) {
+        Toast.fail('暂无数据');
+      }
       for(let item of data){
         item.VA_PlateNo = item.VA_PlateNo ? `(${item.VA_PlateNo})`:''
       }
 
       _this.setData({
-        previewList:data
+        previewList:data,
+        loadModal:false,
+        isSerachModal:false//默认为加载中...而不是查询中...
       })
     })
 

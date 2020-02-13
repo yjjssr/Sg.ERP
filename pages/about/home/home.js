@@ -51,6 +51,20 @@ Component({
         
         }
       }
+      console.log(this.data.organizationPicker)
+      let orgId = wx.getStorageSync("orgId")
+      console.log(orgId)
+      for (let i = 0; i < this.data.organizationPicker.length;i++){
+        if (this.data.organizationPicker[i].Org_ID == orgId){
+         this.setData({
+           index:i
+         })
+         break;
+        }
+      }
+      // let orgObj = _this.data.organizationPicker.find((item, index) => {
+      //   return orgId== item.Org_ID
+      // })
      }
   },
 
@@ -70,15 +84,18 @@ Component({
     },
     PickerChange(e) {
       let _this=this
-      this.setData({
+      _this.setData({
         index: e.detail.value
       })
-      this.data.organizationPicker.filter((item,index)=>{
-        if(index==_this.data.index){
-          wx.setStorageSync("orgId", item.Org_ID)//根据picker的结果改变orgId的缓存
-        }
+      
+      wx.setStorageSync("orgId", _this.data.organizationPicker[_this.data.index].Org_ID)
+      console.log(wx.getStorageSync("orgId"))
+      // _this.data.organizationPicker.filter((item,index)=>{
+      //   if(index==_this.data.index){
+      //     wx.setStorageSync("orgId", item.Org_ID)//根据picker的结果改变orgId的缓存
+      //   }
        
-      })
+      // })
     }
   }
 })

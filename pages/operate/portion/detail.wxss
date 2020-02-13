@@ -4,7 +4,8 @@
 }
 .my-action{
   margin-left: 20rpx;
-  min-width: 120rpx;
+  /* min-width: 120rpx; */
+  font-size: 35rpx;
 }
 .my-copy{
   width: auto!important;

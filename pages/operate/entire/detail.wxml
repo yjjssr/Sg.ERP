@@ -85,12 +85,12 @@
       </view>
     </view>
   </view>
-  <view class="cu-bar bg-white solid-bottom margin-top">
+  <!-- <view class="cu-bar bg-white solid-bottom margin-top">
     <view class="action">
       图片
     </view>
 
-  </view>
+  </view> -->
   <view class="cu-list grid col-3 no-border">
     <view class="cu-item my-padding" wx:for="{{picturesList}}" wx:key="index" data-cur="{{item}}" bindtap="previewImage">
       <view class="bg-img my-radius" style="background-image: url({{item}});height:80px;">

@@ -31,6 +31,7 @@ Component({
       icon: 'explore'
     }, {
       title: '查询价',
+      name:'enquiry',
       color: 'mauve',
       icon: 'explore'
     }, {

@@ -7,15 +7,15 @@
       <form bindsubmit="formSubmit">
         <view class="cu-form-group">
           <view class="title">配件名称</view>
-          <input placeholder="请输入配件名称" name="PartName"></input>
+          <input placeholder="请输入配件名称" name="PartName" bindinput="changeParam" data-key="PartName"></input>
         </view>
         <view class="cu-form-group">
           <view class="title">车辆俗称</view>
-          <input placeholder="请输入车辆俗称" name="Keywords"></input>
+          <input placeholder="请输入车辆俗称" name="Keywords" bindinput="changeParam" data-key="Keywords"></input>
         </view>
         <view class="cu-form-group">
           <view class="title">条码</view>
-          <input placeholder="请输入车辆VIN码或配件码" value="{{searchParam.VIN}}" name="VIN"></input>
+          <input placeholder="请输入车辆VIN码或配件码" value="{{searchParam.VIN}}" name="VIN" bindinput="changeParam" data-key="VIN"></input>
           <view bindtap="onVinScan">
             <van-icon name="scan" size="20" />
           </view>
@@ -53,5 +53,5 @@
 <view class='cu-load load-modal' wx:if="{{loadModal}}">
   <!-- <view class='cuIcon-emojifill text-orange'></view>
   <image src='/images/logo.png' class='png' mode='aspectFit'></image> -->
-  <view class='gray-text'>加载中...</view>
+  <view class='gray-text'>查询中</view>
 </view>

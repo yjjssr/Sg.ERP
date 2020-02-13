@@ -109,7 +109,7 @@ Page({
     collapseActive: '', //折叠面板的初始值
     subCollapseActive: [], //嵌套的内层折叠面板的初始值
     check: false, //每次弹出template Radio弹窗时清除上一次的操作记录
-    orgId: wx.getStorageSync("orgId"),
+    orgId:"",
     // orgId:app.globalData.customInfo.reList[0].Org_ID,
     searchValue: '', //车架号
     movableAreaShow: false, //movableArea是否显示
@@ -164,6 +164,10 @@ Page({
   },
   onLoad: function() {
     let _this = this
+    _this.setData({
+      orgId: wx.getStorageSync("orgId")
+    })
+    console.log(_this.data.orgId)
     wx.getSystemInfo({
       success: function(res) {
         _this.setData({

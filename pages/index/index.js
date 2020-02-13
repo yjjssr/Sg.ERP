@@ -160,6 +160,7 @@ let getCustomInfo=function(){
     if (res.state == 1) {
       app.globalData.customInfo=res.data
       wx.setStorageSync("orgId", app.globalData.customInfo.reList[0].Org_ID)//设置默认的orgId以便接口调用
+      // console.log(wx.getStorageSync("orgId"))
       if(app.customReadyCallBack){
         app.customReadyCallBack(app.globalData)
       }
