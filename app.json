@@ -9,7 +9,8 @@
     "pages/operate/entire/schedule",
     "pages/operate/portion/portion",
     "pages/operate/portion/detail",
-    "pages/operate/enquiry/enquiry"
+    "pages/operate/enquiry/enquiry",
+    "pages/operate/enquiry/detail"
   ],
   "window": {
     "backgroundTextStyle": "light",

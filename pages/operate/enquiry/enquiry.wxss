@@ -1,1 +1,22 @@
-/* pages/operate/enquiry/enquiry.wxss */
+.btn-area {
+  display: flex;
+  padding: 0 20rpx 10rpx;
+}
+
+.my-submit {
+  flex: 1;
+}
+
+.cu-form-group picker:after {
+  content: '';
+}
+.cu-list.menu-avatar{
+  overflow: auto;
+}
+.cu-list.menu-avatar>.cu-item{
+  height: 260rpx;
+  border-bottom: 1rpx solid #ddd; 
+}
+
+
+

@@ -86,6 +86,38 @@ export default {
       let value2 = new Date(b[property]).getTime();
       return value2 - value1; // value1-value2是从小到大    如果是从大到小 return value2 -value1
     }
+  },
+  getCurrentMonthFirst(){
+    let date = new Date();
+    date.setDate(1);
+    let month = parseInt(date.getMonth() + 1);
+    let day = date.getDate();
+    if (month < 10) {
+      month = '0' + month
+    }
+    if (day < 10) {
+      day = '0' + day
+    }
+    return date.getFullYear() + '-' + month + '-' + day;
+   
+  },
+  getCurrentMonthLast(){
+    let date = new Date();
+    let currentMonth = date.getMonth();
+    let nextMonth = ++currentMonth;
+    let nextMonthFirstDay = new Date(date.getFullYear(), nextMonth, 1);
+    let oneDay = 1000 * 60 * 60 * 24;
+    let lastTime = new Date(nextMonthFirstDay - oneDay);
+    let month = parseInt(lastTime.getMonth() + 1);
+    let day = lastTime.getDate();
+    if (month < 10) {
+      month = '0' + month
+    }
+    if (day < 10) {
+      day = '0' + day
+    }
+    return date.getFullYear() + '-' + month + '-' + day;
+  
   }
   // removeChild(){
 

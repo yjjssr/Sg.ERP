@@ -52,15 +52,14 @@ Page({
     getVehicleArchiveDetail({
       "Vin": _this.data.vin
     }).then(data => {
-      let picturesList= getPictureList(data)
+      let picturesList = getPictureList(data)
       this.setData({
-        detailObj:data,
+        detailObj: data,
         picturesList: picturesList
       })
-      console.log(this.data.detailObj)
-      console.log(this.data.picturesList)
     })
   },
+  
   /**
    * 生命周期函数--监听页面显示
    */

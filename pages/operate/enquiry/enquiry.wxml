@@ -1,2 +1,72 @@
-<!--pages/operate/enquiry/enquiry.wxml-->
-<text>pages/operate/enquiry/enquiry.wxml</text>
+<cu-custom bgColor="bg-gradual-pink" isBack="{{true}}">
+  <view slot="content">查询价</view>
+</cu-custom>
+<view>
+  <view class="cu-card">
+    <view class="cu-item shadow">
+      <form bindsubmit="formSubmit">
+        <view class="cu-form-group">
+          <view class="title">状态</view>
+          <picker bindchange="bindStatePicker" value="{{stateIndex}}" range="{{stateList}}" range-key="name">
+            <view class="picker">
+              {{stateList[stateIndex].name}}
+            </view>
+          </picker>
+        </view>
+        <view class="cu-form-group">
+          <view class="title">VIN码</view>
+          <input placeholder="请输入车辆VIN码或配件码" value="{{searchParam.VIN}}" bindinput="changeParam" data-key="VIN"></input>
+          <view bindtap="onVinScan">
+            <van-icon name="scan" size="20" />
+          </view>
+        </view>
+        <view class="cu-form-group">
+          <view class="title">车牌号码</view>
+          <input placeholder="请输入配件名称" bindinput="changeParam" data-key="PlateNo"></input>
+        </view>
+        <view class="cu-form-group">
+          <view class="title">询价时间</view>
+          <picker mode="date" bindchange="changeParam" value="{{searchParam.TimeStart}}" data-key="TimeStart">
+            <view class="picker">
+              {{searchParam.TimeStart}}
+            </view>
+          </picker>
+          <text>~</text>
+          <picker mode="date" bindchange="changeParam" value="{{searchParam.TimeEnd}}" data-key="TimeEnd">
+            <view class="picker">
+              {{searchParam.TimeEnd}}
+            </view>
+          </picker>
+
+        </view>
+        <view class="btn-area">
+          <button class="my-submit cu-btn bg-blue" bindtap="submitForm">搜索</button>
+        </view>
+      </form>
+    </view>
+  </view>
+  <view class="cu-list menu-avatar">
+    <view class="cu-item" wx:for="{{previewList}}" wx:key="index"  data-vrfqid="{{item.VRFQ_ID}}" data-statusname="{{item.VRFQ_StatusName}}" bindtap="navigatorToDetail">
+      <view class="cu-avatar round lg" style="background-image:url({{item.VRFQ_Pic1?item.VRFQ_Pic1:'../../../images/idcard.png'}});"></view>
+      <view class="content">
+        <view class="text-xl">
+          <text class="text-black text-bold">{{item.VA_BrandName?item.VA_BrandName:"暂无"}} <text class="text-price text-red">{{item.VRFQ_TotalAmount?item.VRFQ_TotalAmount:""}}</text></text>
+        </view>
+         <view class="text-lg text-grey">{{item.VRFQ_SupplierName?item.VRFQ_SupplierName:""}}</view>
+        <view class="text-sm text-grey">{{item.VA_FamilyName?item.VA_FamilyName:"暂无"}} {{item.VRFQ_PlateNo?item.VRFQ_PlateNo:""}}</view>
+       
+        <view class="text-xs text-gray ">{{item.VRFQ_CreatedTime?item.VRFQ_CreatedTime:""}}</view>
+      </view>
+      <view class="action">
+        <view class="cu-tag round bg-orange">{{item.VRFQ_StatusName?item.VRFQ_StatusName:""}}</view>
+      </view>
+    </view>
+  </view>
+</view>
+<van-toast id="van-toast" />
+<view class='cu-load load-modal' wx:if="{{loadModal}}">
+  <!-- <view class='cuIcon-emojifill text-orange'></view>
+  <image src='/images/logo.png' class='png' mode='aspectFit'></image> -->
+  <view wx:if="{{isSerachModal}}" class='gray-text'>查询中...</view>
+  <view wx:else class='gray-text'>加载中...</view>
+</view>

@@ -1,0 +1,170 @@
+<!--pages/operate/enquiry/detail.wxml-->
+<cu-custom bgColor="bg-gradual-pink" isCustom="{{true}}">
+  <view slot="content">询价详情</view>
+</cu-custom>
+<view class="main">
+  <view class="cu-list menu sm-border card-menu margin-top">
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">询价时间</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.VRFQ_CreatedTime?detailObj.VRFQ_CreatedTime:""}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">号牌号码</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.VRFQ_PlateNo?detailObj.VRFQ_PlateNo:""}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">车辆识别代号</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.VRFQ_VIN?detailObj.VRFQ_VIN:""}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">车辆类型</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.VRFQ_VehicleType?detailObj.VRFQ_VehicleType:""}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">所有人</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.VRFQ_Owner?detailObj.VRFQ_Owner:""}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">地址</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.VRFQ_Address?detailObj.VRFQ_Address:""}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">品牌型号</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.VRFQ_Model?detailObj.VRFQ_Model:""}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">发动机号码</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.VRFQ_EngineNo?detailObj.VRFQ_EngineNo:""}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">注册日期</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.VRFQ_RegisterDate?detailObj.VRFQ_RegisterDate:""}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">发证日期</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.VRFQ_IssueDate?detailObj.VRFQ_IssueDate:""}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">备注</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.VRFQ_Remark?detailObj.VRFQ_Remark:""}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">询价人信息</view>
+  </view>
+  <view class="cu-list menu sm-border">
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">姓名</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.VRFQ_Inquirer?detailObj.VRFQ_Inquirer:""}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">手机号码</text>
+      </view>
+      <view>
+        <text class="text-grey">{{detailObj.VRFQ_InquiryPhone?detailObj.VRFQ_InquiryPhone:""}}</text>
+      </view>
+    </view>
+
+  </view>
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">车辆图片</view>
+  </view>
+  <view class="cu-list grid col-3  no-border">
+    <view class="cu-item my-padding" wx:for="{{picturesList}}" wx:key="index" data-cur="{{item}}" bindtap="previewImage">
+      <view class="bg-img my-radius" style="background-image: url({{item?item:''}});height:80px;">
+      </view>
+    </view>
+  </view>
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">报价信息</view>
+  </view>
+  <view class="cu-list menu sm-border">
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">报价金额</text>
+      </view>
+      <view>
+        <text wx:if="{{statusname!='待报价'}}" class="text-grey">{{detailObj.VRFQ_TotalAmount?detailObj.VRFQ_TotalAmount:""}}</text>
+        <input wx:else type="number" class="my-input"  placeholder="请输入金额" value="{{detailObj.VRFQ_TotalAmount}}" bindinput="changePrice"></input>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">报价人</text>
+      </view>
+      <view>
+        <!-- <input class="my-input"  placeholder="请输入车辆VIN码或配件码" value="{{statusname=='待报价'?detailObj.User_Name:detailObj.VRFQ_Offerer}}" bindinput="changeParam" data-key="VIN"></input> -->
+        <text class="text-grey">{{statusname=='待报价'?detailObj.User_Name:detailObj.VRFQ_Offerer}}</text>
+      </view>
+    </view>
+    <view class="cu-item">
+      <view class="content">
+        <text class="text-grey">联系电话</text>
+      </view>
+      <view>
+         <!-- <input class="my-input"  placeholder="请输入车辆VIN码或配件码" value="{{statusname=='待报价'?detailObj.User_PhoneNo:detailObj.VRFQ_OfferPhone}}" bindinput="changeParam" data-key="VIN"></input> -->
+         <text class="text-grey">{{statusname=='待报价'?detailObj.User_PhoneNo:detailObj.VRFQ_OfferPhone}}</text>
+      </view>
+    </view>
+    <view class="btn-area bg-white" wx:if="{{statusname=='待报价'}}">
+     <button class="my-submit cu-btn bg-blue" bindtap="submitForm">提交</button>
+    </view>
+
+  </view>
+</view>
+<van-toast id="van-toast" />
+<view class='cu-load load-modal' wx:if="{{loadModal}}">
+  <!-- <view class='cuIcon-emojifill text-orange'></view>
+  <image src='/images/logo.png' class='png' mode='aspectFit'></image> -->
+  <view wx:if="{{isSerachModal}}" class='gray-text'>查询中...</view>
+  <view wx:else class='gray-text'>加载中...</view>
+</view>
