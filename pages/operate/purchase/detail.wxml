@@ -5,11 +5,11 @@
   <form>
     <view class="cu-form-group">
       <view class="title">车辆识别代号</view>
-      <input placeholder="两字短标题"></input>
+      <input placeholder="请输入17位的识别代号"></input>
     </view>
     <view class="cu-form-group">
       <view class="title">采购价</view>
-      <input placeholder="两字短标题"></input>
+      <input placeholder="请输入价格" type="number"></input>
     </view>
     <view class="cu-form-group">
       <view class="title">仓库仓位</view>
@@ -284,7 +284,7 @@
       </view>
     </view>
     <view class="cu-bar btn-group bg-white">
-      <button class="cu-btn bg-green shadow-blur">保存</button>
+      <button class="cu-btn bg-green shadow-blur" bindtap="onSubmit">保存</button>
     </view>
   </form>
 
