@@ -37,96 +37,77 @@
       <view class="cu-list grid col-2 no-border">
         <view class="cu-item">
           <text class="title">行驶证(正面)</text>
-          <view class="view-image" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
-            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
-            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-index="{{index}}">
+          <view class="view-image" bindtap="ViewImage" data-url="{{submitParam.VLMPic}}" wx:if="{{submitParam.VLMPic}}">
+            <image src='{{submitParam.VLMPic}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-key="VLMPic">
               <text class="cuIcon-close"></text>
             </view>
           </view>
-          <view class="choose-image" bindtap="ChooseImage" wx:else data-index="{{index}}">
+          <view class="choose-image" bindtap="ChooseImage" wx:else data-key="VLMPic">
             <text class="cuIcon-cameraadd"></text>
           </view>
         </view>
         <view class="cu-item">
           <text class="title">行驶证(反面)</text>
-          <view class="view-image" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
-            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
-            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-index="{{index}}">
+          <view class="view-image" bindtap="ViewImage" data-url="{{submitParam.VLSPic}}" wx:if="{{submitParam.VLSPic}}">
+            <image src='{{submitParam.VLSPic}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-key="VLSPic">
               <text class="cuIcon-close"></text>
             </view>
           </view>
-          <view class="choose-image" bindtap="ChooseImage" wx:else data-index="{{index}}">
+          <view class="choose-image" bindtap="ChooseImage" wx:else data-key="VLSPic">
             <text class="cuIcon-cameraadd"></text>
           </view>
         </view>
         <view class="cu-item">
           <text class="title">车主身份证(正面)</text>
-          <view class="view-image" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
-            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
-            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-index="{{index}}">
+          <view class="view-image" bindtap="ViewImage" data-url="{{submitParam.VehicleOwnerPic_Front}}" wx:if="{{submitParam.VehicleOwnerPic_Front}}">
+            <image src='{{submitParam.VehicleOwnerPic_Front}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-key="VehicleOwnerPic_Front">
               <text class="cuIcon-close"></text>
             </view>
           </view>
-          <view class="choose-image" bindtap="ChooseImage" wx:else data-index="{{index}}">
+          <view class="choose-image" bindtap="ChooseImage" wx:else data-key="VehicleOwnerPic_Front">
             <text class="cuIcon-cameraadd"></text>
           </view>
         </view>
         <view class="cu-item">
           <text class="title">车主身份证(反面)</text>
-          <view class="view-image" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
-            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
-            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-index="{{index}}">
+          <view class="view-image" bindtap="ViewImage" data-url="{{submitParam.VehicleOwnerPic_Back}}" wx:if="{{submitParam.VehicleOwnerPic_Back}}">
+            <image src='{{submitParam.VehicleOwnerPic_Back}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-key="VehicleOwnerPic_Back">
               <text class="cuIcon-close"></text>
             </view>
           </view>
-          <view class="choose-image" bindtap="ChooseImage" wx:else data-index="{{index}}">
+          <view class="choose-image" bindtap="ChooseImage" wx:else data-key="VehicleOwnerPic_Back">
             <text class="cuIcon-cameraadd"></text>
           </view>
         </view>
         <view class="cu-item">
           <text class="title">代办人身份证(正面)</text>
-          <view class="view-image" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
-            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
-            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-index="{{index}}">
+          <view class="view-image" bindtap="ViewImage" data-url="{{submitParam.AgentPic_Front}}" wx:if="{{submitParam.AgentPic_Front}}">
+            <image src='{{submitParam.AgentPic_Front}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-key="AgentPic_Front">
               <text class="cuIcon-close"></text>
             </view>
           </view>
-          <view class="choose-image" bindtap="ChooseImage" wx:else data-index="{{index}}">
+          <view class="choose-image" bindtap="ChooseImage" wx:else data-key="AgentPic_Front">
             <text class="cuIcon-cameraadd"></text>
           </view>
         </view>
         <view class="cu-item">
           <text class="title">代办人身份证(反面)</text>
-          <view class="view-image" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
-            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
-            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-index="{{index}}">
+          <view class="view-image" bindtap="ViewImage" data-url="{{submitParam.AgentPic_Back}}" wx:if="{{submitParam.AgentPic_Back}}">
+            <image src='{{submitParam.AgentPic_Back}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-key="AgentPic_Back">
               <text class="cuIcon-close"></text>
             </view>
           </view>
-          <view class="choose-image" bindtap="ChooseImage" wx:else data-index="{{index}}">
+          <view class="choose-image" bindtap="ChooseImage" wx:else data-key="AgentPic_Back">
             <text class="cuIcon-cameraadd"></text>
           </view>
         </view>
       </view>
-
-      <!-- <view class="grid col-2 ">
-        <view class="picture-wrap" wx:for="{{9}}" wx:key="*this">
-          <view class="title">111</view>
-
-          <view class="view-image" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
-            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
-            <view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}">
-              <text class="cuIcon-close"></text>
-            </view>
-          </view>
-          <view class="choose-image" bindtap="ChooseImage" wx:if="{{!picturesList[index]}}" data-index="{{index}}">
-            <text class="cuIcon-cameraadd"></text>
-          </view>
-
-
-        </view>
-       
-      </view> -->
     </view>
     <view class="cu-bar bg-white margin-top">
       <view class="action">
@@ -137,73 +118,73 @@
       <view class="cu-list grid col-2 no-border">
         <view class="cu-item">
           <text class="title">左前45º</text>
-          <view class="view-image" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
-            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
-            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-index="{{index}}">
+          <view class="view-image" bindtap="ViewImage" data-url="{{submitParam.LFPic}}" wx:if="{{submitParam.LFPic}}">
+            <image src='{{submitParam.LFPic}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-key="LFPic">
               <text class="cuIcon-close"></text>
             </view>
           </view>
-          <view class="choose-image" bindtap="ChooseImage" wx:else data-index="{{index}}">
+          <view class="choose-image" bindtap="ChooseImage" wx:else data-key="LFPic">
             <text class="cuIcon-cameraadd"></text>
           </view>
         </view>
         <view class="cu-item">
           <text class="title">车架号</text>
-          <view class="view-image" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
-            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
-            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-index="{{index}}">
+          <view class="view-image" bindtap="ViewImage" data-url="{{submitParam.VINPic}}" wx:if="{{submitParam.VINPic}}">
+            <image src='{{submitParam.VINPic}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-key="VINPic">
               <text class="cuIcon-close"></text>
             </view>
           </view>
-          <view class="choose-image" bindtap="ChooseImage" wx:else data-index="{{index}}">
+          <view class="choose-image" bindtap="ChooseImage" wx:else data-key="VINPic">
             <text class="cuIcon-cameraadd"></text>
           </view>
         </view>
         <view class="cu-item">
           <text class="title">车架号切割图</text>
-          <view class="view-image" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
-            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
-            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-index="{{index}}">
+          <view class="view-image" bindtap="ViewImage" data-url="{{submitParam.VINCutPic}}" wx:if="{{submitParam.VINCutPic}}">
+            <image src='{{submitParam.VINCutPic}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-key="VINCutPic">
               <text class="cuIcon-close"></text>
             </view>
           </view>
-          <view class="choose-image" bindtap="ChooseImage" wx:else data-index="{{index}}">
+          <view class="choose-image" bindtap="ChooseImage" wx:else data-key="VINCutPic">
             <text class="cuIcon-cameraadd"></text>
           </view>
         </view>
         <view class="cu-item">
           <text class="title">发动机整体</text>
-          <view class="view-image" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
-            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
-            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-index="{{index}}">
+          <view class="view-image" bindtap="ViewImage" data-url="{{submitParam.EnginePic}}" wx:if="{{submitParam.EnginePic}}">
+            <image src='{{submitParam.EnginePic}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-key="EnginePic">
               <text class="cuIcon-close"></text>
             </view>
           </view>
-          <view class="choose-image" bindtap="ChooseImage" wx:else data-index="{{index}}">
+          <view class="choose-image" bindtap="ChooseImage" wx:else data-key="EnginePic">
             <text class="cuIcon-cameraadd"></text>
           </view>
         </view>
         <view class="cu-item">
           <text class="title">发动机号</text>
-          <view class="view-image" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
-            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
-            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-index="{{index}}">
+          <view class="view-image" bindtap="ViewImage" data-url="{{submitParam.EngineNoPic}}" wx:if="{{submitParam.EngineNoPic}}">
+            <image src='{{submitParam.EngineNoPic}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-key="EngineNoPic">
               <text class="cuIcon-close"></text>
             </view>
           </view>
-          <view class="choose-image" bindtap="ChooseImage" wx:else data-index="{{index}}">
+          <view class="choose-image" bindtap="ChooseImage" wx:else data-key="EngineNoPic">
             <text class="cuIcon-cameraadd"></text>
           </view>
         </view>
         <view class="cu-item">
           <text class="title">后桥</text>
-          <view class="view-image" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
-            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
-            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-index="{{index}}">
+          <view class="view-image" bindtap="ViewImage" data-url="{{submitParam.RearAxlePic}}" wx:if="{{submitParam.RearAxlePic}}">
+            <image src='{{submitParam.RearAxlePic}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-key="RearAxlePic">
               <text class="cuIcon-close"></text>
             </view>
           </view>
-          <view class="choose-image" bindtap="ChooseImage" wx:else data-index="{{index}}">
+          <view class="choose-image" bindtap="ChooseImage" wx:else data-key="RearAxlePic">
             <text class="cuIcon-cameraadd"></text>
           </view>
         </view>
@@ -218,85 +199,85 @@
       <view class="cu-list grid col-2 no-border prove-wrap">
         <view class="cu-item">
           <text class="title">情况说明</text>
-          <view class="view-image" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
-            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
-            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-index="{{index}}">
+          <view class="view-image" bindtap="ViewImage" data-url="{{submitParam.OverviewPic}}" wx:if="{{submitParam.OverviewPic}}">
+            <image src='{{submitParam.OverviewPic}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-key="OverviewPic">
               <text class="cuIcon-close"></text>
             </view>
           </view>
-          <view class="choose-image" bindtap="ChooseImage" wx:else data-index="{{index}}">
+          <view class="choose-image" bindtap="ChooseImage" wx:else data-key="OverviewPic">
             <text class="cuIcon-cameraadd"></text>
           </view>
         </view>
         <view class="cu-item">
           <text class="title">承诺书</text>
-          <view class="view-image" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
-            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
-            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-index="{{index}}">
+          <view class="view-image" bindtap="ViewImage" data-url="{{submitParam.UndertakingPic}}" wx:if="{{submitParam.UndertakingPic}}">
+            <image src='{{submitParam.UndertakingPic}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-key="UndertakingPic">
               <text class="cuIcon-close"></text>
             </view>
           </view>
-          <view class="choose-image" bindtap="ChooseImage" wx:else data-index="{{index}}">
+          <view class="choose-image" bindtap="ChooseImage" wx:else data-key="UndertakingPic">
             <text class="cuIcon-cameraadd"></text>
           </view>
         </view>
         <view class="cu-item">
           <text class="title">解体证明</text>
-          <view class="view-image" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
-            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
-            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-index="{{index}}">
+          <view class="view-image" bindtap="ViewImage" data-url="{{submitParam.CertificateofDestructionPic}}" wx:if="{{submitParam.CertificateofDestructionPic}}">
+            <image src='{{submitParam.CertificateofDestructionPic}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-key="CertificateofDestructionPic">
               <text class="cuIcon-close"></text>
             </view>
           </view>
-          <view class="choose-image" bindtap="ChooseImage" wx:else data-index="{{index}}">
+          <view class="choose-image" bindtap="ChooseImage" wx:else data-key="CertificateofDestructionPic">
             <text class="cuIcon-cameraadd"></text>
           </view>
         </view>
         <view class="cu-item">
           <text class="title">回收证明</text>
-          <view class="view-image" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
-            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
-            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-index="{{index}}">
+          <view class="view-image" bindtap="ViewImage" data-url="{{submitParam.RecoveryCertificatePic}}" wx:if="{{submitParam.RecoveryCertificatePic}}">
+            <image src='{{submitParam.RecoveryCertificatePic}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-key="RecoveryCertificatePic">
               <text class="cuIcon-close"></text>
             </view>
           </view>
-          <view class="choose-image" bindtap="ChooseImage" wx:else data-index="{{index}}">
+          <view class="choose-image" bindtap="ChooseImage" wx:else data-key="RecoveryCertificatePic">
             <text class="cuIcon-cameraadd"></text>
           </view>
         </view>
         <view class="cu-item">
           <text class="title">注销申请表</text>
-          <view class="view-image" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
-            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
-            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-index="{{index}}">
+          <view class="view-image" bindtap="ViewImage" data-url="{{submitParam.CancellationApplicationPic}}" wx:if="{{submitParam.CancellationApplicationPic}}">
+            <image src='{{submitParam.CancellationApplicationPic}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-key="CancellationApplicationPic">
               <text class="cuIcon-close"></text>
             </view>
           </view>
-          <view class="choose-image" bindtap="ChooseImage" wx:else data-index="{{index}}">
+          <view class="choose-image" bindtap="ChooseImage" wx:else data-key="CancellationApplicationPic">
             <text class="cuIcon-cameraadd"></text>
           </view>
         </view>
         <view class="cu-item">
           <text class="title">登记证书</text>
-          <view class="view-image" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
-            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
-            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-index="{{index}}">
+          <view class="view-image" bindtap="ViewImage" data-url="{{submitParam.RegisterCertificatePic}}" wx:if="{{submitParam.RegisterCertificatePic}}">
+            <image src='{{submitParam.RegisterCertificatePic}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-key="RegisterCertificatePic">
               <text class="cuIcon-close"></text>
             </view>
           </view>
-          <view class="choose-image" bindtap="ChooseImage" wx:else data-index="{{index}}">
+          <view class="choose-image" bindtap="ChooseImage" wx:else data-key="RegisterCertificatePic">
             <text class="cuIcon-cameraadd"></text>
           </view>
         </view>
         <view class="cu-item">
           <text class="title">事故认定书</text>
-          <view class="view-image" bindtap="ViewImage" data-url="{{picturesList[index]}}" wx:if="{{picturesList[index]}}">
-            <image src='{{picturesList[index]}}' mode='aspectFill'></image>
-            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-index="{{index}}">
+          <view class="view-image" bindtap="ViewImage" data-url="{{submitParam.TrafficAccidentsCertPic}}" wx:if="{{submitParam.TrafficAccidentsCertPic}}">
+            <image src='{{submitParam.TrafficAccidentsCertPic}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red del-icon" catchtap="DelImg" data-key="TrafficAccidentsCertPic">
               <text class="cuIcon-close"></text>
             </view>
           </view>
-          <view class="choose-image" bindtap="ChooseImage" wx:else data-index="{{index}}">
+          <view class="choose-image" bindtap="ChooseImage" wx:else data-key="TrafficAccidentsCertPic">
             <text class="cuIcon-cameraadd"></text>
           </view>
         </view>

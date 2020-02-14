@@ -30,7 +30,7 @@ let getAutoPartsDetail = function (param) {
     })
   })
 }
-let driveCardRecognize=function(){//上传的行驶证识别
+let driveCardRecognize=function(param){//上传的行驶证识别
   return new Promise((resolve, reject) => {
     ajax.post('/api/Staff/DriveCardRecognize', param).then(res => {
       if (res.state == 1) {
@@ -70,7 +70,31 @@ Page({
     statusname:'',//从之前页面获取
     orgId:'',
     basicObj:null,//仓库,供应商列表所在对象
-    picturesList: ['https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg']
+    submitParam:{
+      VLMPic: '',//行驶证正面
+      VLSPic: '',//行驶证反面
+      VehicleOwnerPic_Front:'',//车主身份证正面
+      VehicleOwnerPic_Back:'',//车主身份证反面
+      AgentPic_Front:'',//代办人身份证正面
+      AgentPic_Back:'',//代办人身份证反面
+      LFPic:'',//左前45
+      VINPic:'',//车架号
+      VINCutPic:'',//车架切割
+      EnginePic:'',//发动机整体
+      EngineNoPic:'',//发动机号
+      RearAxlePic:'',//后桥
+      OverviewPic:'',//情况说明
+      UndertakingPic:'',//承诺书
+      CertificateofDestructionPic:'',//解体证明
+      RecoveryCertificatePic: '',//回收证明
+      CancellationApplicationPic:'',//注册申请表
+      RegisterCertificatePic:'',//登记证书
+      TrafficAccidentsCertPic:'',//事故认定书
+      
+    },
+    information:null,//驾驶证正面解析得到的信息
+    informationBack: null,//驾驶证背面面解析得到的信息
+   
 
   },
 
@@ -101,12 +125,76 @@ Page({
   onShow: function () {
     app.isReLaunchToIndex() //判断openId是否过期，如果过期跳转到index
   },
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
+  ChooseImage:function(e){
+    let _this = this
+    let {key} = e.currentTarget.dataset
+    wx.chooseImage({
+      count: 1, //默认9
+      sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+      sourceType: ['album'], //从相册选择
+      success: (res) => {
+        wx.uploadFile({
+          url: config.host + '/api/Staff/UploadFile', //仅为示例，非真实的接口地址
+          filePath: res.tempFilePaths[0],
+          name: 'file',
+          formData: {
+            'program': 'logs'
+          },
+          success(res) {
+            if (res.statusCode != 200) {
+              Toast.fail("图片上传失败")
+              return
+            }
+            const result = JSON.parse(res.data)
+            if (result.state != 1) {
+              Toast.fail("图片上传失败")
+              return
+            }
+            const url = result.data.path
+            _this.setData({
+              [`submitParam.${key}`]:url
+            })
+           
+            if (key == 'VLMPic' || key == 'VLSPic'){//当上传行驶证的时候需要调用接口解析得到相应信息
+              let config = key == 'VLMPic'?'face':'back'
+              driveCardRecognize({ Url: url, Config: config }).then(data => {
+                _this.setData({
+                    [key == 'VLMPic' ? 'information' : 'informationBack']: data.Data
+                })
+              })
+            }
+            console.log(_this.data.submitParam)
+          }
+        })
+      }
+    });
   },
+  DelImg(e){
+    let _this = this
+    let { key } = e.currentTarget.dataset
+    wx.showModal({
+      title: '确认框',
+      content: '确定要删除这张照片吗？',
+      cancelText: '取消',
+      confirmText: '确定',
+      success: res => {
+        if (res.confirm) {
+          this.setData({
+            [`submitParam.${key}`]:''
+          })
+        }
+      }
+    })
+  },
+  ViewImage(e){
+    let _this = this
+    let { url } = e.currentTarget.dataset
+    wx.previewImage({
+      urls: [url],
+      current: 0
+    });
+  }
+  
 
  
 })

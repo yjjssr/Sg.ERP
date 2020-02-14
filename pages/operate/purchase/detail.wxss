@@ -44,6 +44,7 @@ image {
 .del-icon text {
   font-size: 24rpx !important;
   margin-top: 0 !important;
+  color: #fff!important;
 }
 
 .choose-image>text[class*="cuIcon-"] {
