@@ -1,0 +1,39 @@
+<cu-custom bgColor="bg-gradual-pink" isBack="{{true}}">
+  <view slot="content">采购单</view>
+</cu-custom>
+<view class="my-main">
+  <van-search placeholder="请输入车牌、vin码、俗称" use-action-slot bind:change="onChange">
+    <view slot="action" bind:tap="onSerach">搜索</view>
+  </van-search>
+  <view class="cu-list menu-avatar">
+    <view class="cu-item" wx:for="{{previewList}}" wx:key="index" data-vpoid='{{item.VPO_ID}}' data-statusname='{{item.VPO_ApprovalStatusName}}' bindtap="onDetail" id="edit">
+      <view class="cu-avatar round lg" style="background-image:url({{item.VP_LFPic?item.VP_LFPic:'../../../images/idcard.png'}});"></view>
+      <view class="content">
+        <view class=" text-xl text-black text-blod">{{item.VA_PlateNo?item.VA_PlateNo:''}} {{item.VA_FamilyName?item.VA_FamilyName:''}}</view>
+        <view class="text-gray text-lg flex">
+         {{item.VO_Name!=null?item.VO_Name:"无"}}/{{item.Vag_Name?item.Vag_Name:"无"}}
+        </view>
+        <view class="text-gray text-sm flex">{{item.VPO_CreatedTime?item.VPO_CreatedTime:""}}</view>
+      </view>
+      <view class="action">
+        <view class="cu-tag round  bg-orange">{{item.VPO_StatusName?item.VPO_StatusName:""}}</view>
+        <view class="cu-tag round bg-yellow">{{item.VPO_ApprovalStatusName?item.VPO_ApprovalStatusName:""}}</view>
+      </view>
+    </view>
+
+
+  </view>
+  <view class="cu-bar tabbar margin-top-xl bg-white my-add">
+    <view class="action text-gray add-action">
+      <button id="add" class="cu-btn cuIcon-add bg-green shadow" bindtap="onDetail"></button>
+    </view>
+  </view>
+</view>
+<van-toast id="van-toast" />
+<view class='cu-load load-modal' wx:if="{{loadModal}}">
+  <!-- <view class='cuIcon-emojifill text-orange'></view>
+  <image src='/images/logo.png' class='png' mode='aspectFit'></image> -->
+  <view wx:if="{{isNav}}" class='gray-text'>跳转中</view>
+  <view wx:else class='gray-text'>查询中</view>
+  
+</view>

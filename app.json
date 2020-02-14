@@ -10,7 +10,9 @@
     "pages/operate/portion/portion",
     "pages/operate/portion/detail",
     "pages/operate/enquiry/enquiry",
-    "pages/operate/enquiry/detail"
+    "pages/operate/enquiry/detail",
+    "pages/operate/purchase/purchase",
+    "pages/operate/purchase/detail"
   ],
   "window": {
     "backgroundTextStyle": "light",

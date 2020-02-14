@@ -1,0 +1,76 @@
+.main-wrap{
+  margin-bottom: 100rpx;
+}
+.cu-list.grid.no-border {
+  width: 100%;
+}
+.cu-list.grid.no-border>.cu-item {
+  padding-right: 10rpx;
+  padding-left: 10rpx;
+}
+.cu-list.grid>.cu-item>text.title {
+  margin-top: 0;
+  margin-bottom: 10rpx;
+  text-align: center;
+}
+
+
+.view-image, .choose-image {
+  position: relative;
+  height: 240rpx;
+}
+
+image {
+  height: 100% !important;
+  border-radius: 6rpx;
+}
+
+.choose-image {
+  border: 1px solid #ddd;
+  border-radius: 6rpx;
+}
+
+.cu-list.grid>.cu-item .cu-tag {
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-bottom-left-radius: 6rpx;
+  padding: 6rpx 12rpx;
+  height: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  left: auto;
+}
+
+.del-icon text {
+  font-size: 24rpx !important;
+  margin-top: 0 !important;
+}
+
+.choose-image>text[class*="cuIcon-"] {
+  font-size: 52rpx !important;
+  position: absolute !important;
+  color: var(--grey) !important;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+/* .cu-list.grid.col-3.no-border.prove-wrap .view-image, .choose-image{
+  height: 200rpx;
+} */
+.cu-bar.btn-group{
+  position: fixed;
+bottom: 0;
+width: 100%;
+
+}
+.cu-bar.btn-group button{
+  max-width: 100%;
+}
+
+

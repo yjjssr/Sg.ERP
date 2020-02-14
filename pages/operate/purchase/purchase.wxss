@@ -1,0 +1,22 @@
+.my-main{
+ margin-bottom: 100rpx;
+}
+.my-add{
+  position: fixed;
+width: 100%;
+bottom: 0;
+
+}
+.cu-bar{
+  min-height: 80rpx;
+}
+.cu-bar.tabbar{
+height: calc(60rpx + env(safe-area-inset-bottom) / 3);
+
+}
+.cu-list.menu-avatar>.cu-item{
+  min-height: 140rpx;
+}
+.cu-tag+.cu-tag{
+  margin-left: 0;
+}

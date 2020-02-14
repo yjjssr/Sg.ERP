@@ -36,6 +36,7 @@ Component({
       icon: 'explore'
     }, {
       title: '采购单',
+      name:'purchase',
       color: 'pink',
       icon: 'list'
     }, {
