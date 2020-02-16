@@ -116,7 +116,7 @@ let verifyCheck = function (list) {
       list = list.sort(function (a, b) {
         return a.index - b.index
       })
-      console.log("********")
+      console.log("opetate home.js********")
       console.log(list)
       resolve(list)
       // _this.setData({
@@ -198,7 +198,7 @@ Component({
     
   },
   lifetimes:{
-    attached:function(){
+    ready:function(){
       let _this = this
       if (wx.getStorageSync("orgIdChanged")) {
         verifyCheck(_this.data.elements).then(data => {
@@ -208,6 +208,7 @@ Component({
         })
       }
     }
+
    
   }
 })

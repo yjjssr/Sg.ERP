@@ -120,7 +120,7 @@ Page({
     information: null, //驾驶证正面解析得到的信息
     informationBack: null, //驾驶证背面面解析得到的信息
     detailObj: null, //编辑时的详情
-    suppliertypelist: [{
+    supplierTypeArray: [{
         code: 'BXGS',
         name: '保险公司',
       },
@@ -135,10 +135,16 @@ Page({
       {
         code: 'CLDBR',
         name: '车辆代办人'
-      }]
-
+      }],
+    allStoreAreaArray:[],//map之后的全部仓位列表
+    storePickerArray: [],//仓库仓位的picker
+    storePickerIndex: [0, 0],//仓库仓位picker的默认选中值
+    supplierPickerArray:[],//供应商二级Picker数组
+    supplierPickerIndex:[0,0],//供应商的picer默认选中值
+    pcMapArray:[],//平台公司map的列表
+    icMapArray:[]//保险公司map的列表
   },
-  storePickerArray:[],//仓库仓位的picker
+  
 
   /**
    * 生命周期函数--监听页面加载
@@ -160,11 +166,59 @@ Page({
     beforeVPO({
       OrgID: orgId
     }).then(data => {
-      let storeArray = [data.relist]
-      console.log(storeArray)
-      
+      let storeArray = data.relist.map(item=>{//仓库的列表
+        return {
+          id: item.WH_ID,
+          code: item.WH_Code,
+          name: item.WH_Name
+        }
+      })
+      let allStoreAreaArray=data.waList.map(item=>{
+        return {
+          id: item.WHA_ID,
+          parentId: item.WHA_WH_ID,
+          code: item.WHA_Code,
+          name: item.WHA_Name
+        }
+      })
+      let storeAreaArray = allStoreAreaArray.filter(item=>{
+        return item.parentId == storeArray[0].id
+      })
+      let storePickerArray = [storeArray, storeAreaArray]
+      let supplierTypeArray = _this.data.supplierTypeArray
+      let supplierType = _this.data.supplierTypeArray[0]
+      let icMapArray = data.icList.map(item => {
+        return {
+          code: item.IC_Code,
+          id: item.IC_ID,
+          name: item.IC_ShortName,
+          // shortName: item.IC_ShortName
+        }
+      })
+      let pcMapArray = data.pcList.map(item => {
+        return {
+          code: item.PC_Code,
+          id: item.PC_ID,
+          name: item.PC_ShortName,
+          // shortName: item.PC_ShortName
+        }
+      })
+      let supplierArray=[]
+      if (supplierType.code != "CZ" || supplierType.code !="CLDBR") {
+        if (supplierType.code =="BXGS"){
+          supplierArray = icMapArray
+        } else if (supplierType.code == "PTGS"){
+          supplierArray = pcMapArray
+        }
+      }
+      let supplierPickerArray = [supplierTypeArray, supplierArray]
       _this.setData({
-        basicObj: data
+        basicObj: data,
+        storePickerArray,
+        allStoreAreaArray,//map之后的全部仓位列表
+        supplierPickerArray,
+        pcMapArray,
+        icMapArray
       })
     })
     if (!isAdd) {
@@ -204,6 +258,7 @@ Page({
 
       })
     }
+   
   },
   /**
    * 生命周期函数--监听页面显示
@@ -291,7 +346,54 @@ Page({
   },
   onSubmit() {
 
+  },
+  StoreColumnChange(e){//仓位仓库二级picker列监听器
+    let _this=this
+    let { storePickerArray,storePickerIndex,allStoreAreaArray}=_this.data
+    storePickerIndex[e.detail.column] = e.detail.value
+    if (e.detail.column==0){
+      let store = storePickerArray[0][e.detail.value]
+      let storeAreaArray = allStoreAreaArray.filter(item=>item.parentId==store.id)
+      storePickerArray[1] = storeAreaArray
+      _this.setData({
+        storePickerIndex,
+        storePickerArray
+      })
+    }
+    
+  },
+  StoreChange(e){
+    this.setData({
+      storePickerIndex: e.detail.value
+    })
+  },
+  SupplierColumnChange(e){
+    
+    let _this = this
+    let { supplierPickerArray, supplierPickerIndex, icMapArray, pcMapArray } = _this.data
+    supplierPickerIndex[e.detail.column] = e.detail.value
+    if (e.detail.column == 0) {
+      let supplierType = supplierPickerArray[0][e.detail.value]
+      let supplierArray=[]
+        if (supplierType.code == "BXGS"){
+          supplierArray = icMapArray
+        } else if (supplierType.code == "PTGS"){
+          supplierArray = pcMapArray
+        }
+      supplierPickerArray[1] = supplierArray
+      _this.setData({
+        supplierPickerIndex,
+        supplierPickerArray
+      })
+      
+    }
+  },
+  SupplierChange(e){
+    this.setData({
+      supplierPickerIndex: e.detail.value
+    })
   }
+
 
 
 

@@ -238,6 +238,7 @@ let verifyCheck = function(list) {
     OpenID: wx.getStorageSync("openId"),
     OrgID: wx.getStorageSync("orgId")
   }
+  console.log("elements和orgId的值为:")
   console.log(list)
   console.log(wx.getStorageSync("orgId"))
   let p1 = checkValRight(param).then(data => {
@@ -291,7 +292,7 @@ let verifyCheck = function(list) {
       list = list.sort(function(a, b) {
         return a.index - b.index
       })
-      console.log("********")
+      console.log("index********")
       console.log(list)
       resolve(list)
       // _this.setData({
@@ -326,7 +327,7 @@ Page({
   },
   onLoad: function() {
     let _this=this
-    wx.removeStorageSync("orgIdChanged")//重新编译的时候要改变orgId的缓存,以此为标志来决定orgId是取初始化的还是改变后的
+    wx.removeStorageSync("orgIdChanged")//重新编译的时候要改变orgId的缓存,以此为标志来决定orgId是取初始化的还是改变后的，wx.getStorageSync不随重新编译而改变
     if (wx.getStorageInfoSync().keys.find(key => key == "openId")) {
       isRelaunchToRegister()
       getCustomInfo().then(()=>{
@@ -334,6 +335,8 @@ Page({
           _this.setData({
             elements: data
           })
+          console.log("elements的值为:")
+          console.log(_this.data.elements)
         })
       })
       

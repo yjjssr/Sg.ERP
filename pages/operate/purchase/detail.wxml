@@ -13,17 +13,17 @@
     </view>
     <view class="cu-form-group">
       <view class="title">仓库仓位</view>
-      <picker mode="multiSelector" bindchange="MultiChange" bindcolumnchange="MultiColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
+      <picker mode="multiSelector" bindchange="StoreChange" bindcolumnchange="StoreColumnChange" value="{{storePickerIndex}}" range="{{storePickerArray}}" range-key="name">
         <view class="picker">
-          {{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
+          {{storePickerArray[0][storePickerIndex[0]].name}}，{{storePickerArray[1][storePickerIndex[1]].name}}
         </view>
       </picker>
     </view>
     <view class="cu-form-group">
       <view class="title">供应商</view>
-      <picker mode="multiSelector" bindchange="MultiChange" bindcolumnchange="MultiColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
+      <picker mode="multiSelector" bindchange="SupplierChange" bindcolumnchange="SupplierColumnChange" value="{{supplierPickerIndex}}" range="{{supplierPickerArray}}" range-key="name">
         <view class="picker">
-          {{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
+          {{supplierPickerArray[0][supplierPickerIndex[0]].name}}{{supplierPickerArray[1].length!=0?",":""}}{{supplierPickerArray[1][supplierPickerIndex[1]].name}}
         </view>
       </picker>
     </view>
