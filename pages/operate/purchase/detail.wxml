@@ -2,14 +2,14 @@
   <view slot="content">采购单{{isAdd?'新增':'修改'}}</view>
 </cu-custom>
 <view class="main-wrap">
-  <form>
+  <form bindsubmit="onSubmit">
     <view class="cu-form-group">
       <view class="title">车辆识别代号</view>
-      <input placeholder="请输入17位的识别代号"></input>
+      <input bindinput="onInput" data-name="Vin" name="Vin" placeholder="请输入17位的识别代号" value="{{submitParam.Vin}}"></input>
     </view>
     <view class="cu-form-group">
       <view class="title">采购价</view>
-      <input placeholder="请输入价格" type="number"></input>
+      <input bindinput="onInput" data-name="Price" name="Price" placeholder="请输入价格" type="number" value="{{submitParam.Price}}"></input>
     </view>
     <view class="cu-form-group">
       <view class="title">仓库仓位</view>
@@ -284,10 +284,17 @@
       </view>
     </view>
     <view class="cu-bar btn-group bg-white">
-      <button class="cu-btn bg-green shadow-blur" bindtap="onSubmit">保存</button>
+      <button class="cu-btn bg-green shadow-blur" form-type="submit">保存</button>
     </view>
   </form>
 
 </view>
 
 <van-toast id="van-toast" />
+<view class='cu-load load-modal' wx:if="{{loadModal}}">
+  <!-- <view class='cuIcon-emojifill text-orange'></view>
+  <image src='/images/logo.png' class='png' mode='aspectFit'></image> -->
+  <view wx:if="{{isSubmit}}" class='gray-text'>提交中</view>
+  <view wx:else class='gray-text'>查询中</view>
+  
+</view>
