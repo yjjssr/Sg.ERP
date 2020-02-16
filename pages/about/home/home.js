@@ -87,9 +87,12 @@ Component({
       _this.setData({
         index: e.detail.value
       })
-      
+      app.globalData.customInfo
       wx.setStorageSync("orgId", _this.data.organizationPicker[_this.data.index].Org_ID)
+      wx.setStorageSync("orgIdChanged",true)
+      console.log("about home.js-------")
       console.log(wx.getStorageSync("orgId"))
+      
       // _this.data.organizationPicker.filter((item,index)=>{
       //   if(index==_this.data.index){
       //     wx.setStorageSync("orgId", item.Org_ID)//根据picker的结果改变orgId的缓存

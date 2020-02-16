@@ -10,7 +10,7 @@ let isRelaunchToRegister = function() {
           url: '../register/register'
         })
       } else {
-        if (app.globalData.loginInfo){
+        if (app.globalData.loginInfo) {
           let resData = app.globalData.loginInfo
           if (!resData.isRegister) {
             if (app.globalData.userInfo) {
@@ -57,7 +57,7 @@ let isRelaunchToRegister = function() {
               url: '../register/register'
             })
           }
-        }else{
+        } else {
           ajax.post('/api/Staff/Login', { //根据login的返回结果来决定是否需要跳转到登录
             OpenID: wx.getStorageSync("openId")
           }).then(res => {
@@ -110,7 +110,7 @@ let isRelaunchToRegister = function() {
             }
           })
         }
-       
+
       }
     }
   })
@@ -152,51 +152,212 @@ let registerMember = function(userInfo) {
     }
   })
 }
-let getCustomInfo=function(){
-  let paramObj={
+let getCustomInfo = function() {
+  let paramObj = {
     OpenID: wx.getStorageSync("openId")
   }
-  ajax.post('/api/Staff/GetPersonalInfo', paramObj).then(res=>{
-    if (res.state == 1) {
-      app.globalData.customInfo=res.data
-      wx.setStorageSync("orgId", app.globalData.customInfo.reList[0].Org_ID)//设置默认的orgId以便接口调用
-      // console.log(wx.getStorageSync("orgId"))
-      if(app.customReadyCallBack){
-        app.customReadyCallBack(app.globalData)
+  return new Promise((resolve, reject) => {
+    ajax.post('/api/Staff/GetPersonalInfo', paramObj).then(res => {
+      if (res.state == 1) {
+        app.globalData.customInfo = res.data
+        wx.setStorageSync("orgId", res.data.reList[0].Org_ID) //设置默认的orgId以便接口调用
+        // console.log(wx.getStorageSync("orgId"))
+        // if (app.customReadyCallBack) {
+        //   app.customReadyCallBack(app.globalData)
+        // }
+        resolve()
+      } else {
+        console.log("获取用户信息失败")
+
       }
-    } else {
-      console.log("获取用户信息失败")
-     
-    }
+    })
   })
 
-  
+
+
 }
+let checkValRight = function(param) {
+  return new Promise((resolve, reject) => {
+    ajax.post('/api/Staff/CheckValRight', param).then(res => {
+      if (res.state == 1) {
+        resolve(res.data)
+      } else {
+        Toast.fail({
+          message: res.data,
+          zIndex: 2000
+        })
+      }
+    })
+  })
+}
+let rightCheck = function(param) {
+  return new Promise((resolve, reject) => {
+    ajax.post('/api/Staff/RightCheck', param).then(res => {
+      if (res.state == 1) {
+        resolve(res.data)
+      } else {
+        Toast.fail({
+          message: res.data,
+          zIndex: 2000
+        })
+      }
+    })
+  })
+}
+let rightCheckVPO = function(param) {
+  return new Promise((resolve, reject) => {
+    ajax.post('/api/Staff/RightCheckVPO', param).then(res => {
+      if (res.state == 1) {
+        resolve(res.data)
+      } else {
+        Toast.fail({
+          message: res.data,
+          zIndex: 2000
+        })
+      }
+    })
+  })
+}
+let rightCheckARB = function(param) {
+  return new Promise((resolve, reject) => {
+    ajax.post('/api/Staff/RightCheckARB', param).then(res => {
+      if (res.state == 1) {
+        resolve(res.data)
+      } else {
+        Toast.fail({
+          message: res.data,
+          zIndex: 2000
+        })
+      }
+    })
+  })
+}
+let verifyCheck = function(list) {
+
+  let param = {
+    OpenID: wx.getStorageSync("openId"),
+    OrgID: wx.getStorageSync("orgId")
+  }
+  console.log(list)
+  console.log(wx.getStorageSync("orgId"))
+  let p1 = checkValRight(param).then(data => {
+    if (data.isCanVal) {
+      list = list.concat({
+        title: '预评估',
+        name: 'evaluate',
+        color: 'cyan',
+        icon: 'evaluate',
+        index: 0
+      })
+    }
+  })
+  let p2 = rightCheck(param).then(data => {
+    if (data.isCanEnter) {
+      list = list.concat({
+        title: '查询价',
+        name: 'enquiry',
+        color: 'mauve',
+        icon: 'explore',
+        index: 3
+      })
+
+    }
+  })
+  let p3 = rightCheckVPO(param).then(data => {
+    if (data.isCanMakeVPO) {
+      list = list.concat({
+        title: '采购单',
+        name: 'purchase',
+        color: 'pink',
+        icon: 'list',
+        index: 4
+      })
+
+    }
+  })
+  let p4 = rightCheckARB(param).then(data => {
+    if (data.isCanDealARB) {
+      list = list.concat({
+        title: '财务审核',
+        color: 'brown',
+        icon: 'refund',
+        index: 5
+      })
+
+    }
+  })
+  return new Promise((resolve, reject) => {
+    Promise.all([p1, p2, p3, p4]).then(() => {
+      list = list.sort(function(a, b) {
+        return a.index - b.index
+      })
+      console.log("********")
+      console.log(list)
+      resolve(list)
+      // _this.setData({
+      //   elements: list
+      // })
+    })
+  })
+
+
+}
+
 Page({
   data: {
     userInfo: null,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    PageCur: 'basics'
+    PageCur: 'basics',
+    elements: [{
+      title: '查整车',
+      name: 'entire',
+      color: 'blue',
+      icon: 'explore',
+      index: 1
+    }, {
+      title: '查配件',
+      name: 'portion',
+      color: 'purple',
+      icon: 'explore',
+      index: 2
+    }]
+   
 
   },
   onLoad: function() {
+    let _this=this
+    wx.removeStorageSync("orgIdChanged")//重新编译的时候要改变orgId的缓存,以此为标志来决定orgId是取初始化的还是改变后的
     if (wx.getStorageInfoSync().keys.find(key => key == "openId")) {
       isRelaunchToRegister()
-      getCustomInfo()
+      getCustomInfo().then(()=>{
+        verifyCheck(_this.data.elements).then(data => {
+          _this.setData({
+            elements: data
+          })
+        })
+      })
+      
     } else {
       app.openIdAndKeyReadyCallback = res => {
         isRelaunchToRegister()
-        getCustomInfo()
+        getCustomInfo().then(() => {
+          verifyCheck(_this.data.elements).then(data => {
+            _this.setData({
+              elements: data
+            })
+          })
+        })
       }
-    }    
+    }
   },
   onShow: function() {
-    app.checkSession()
+    app.checkSession()//这一步非常重要，不可删除 
   },
   NavChange(e) {
     this.setData({
       PageCur: e.currentTarget.dataset.cur
     })
-  }
+  },
+
 
 })
