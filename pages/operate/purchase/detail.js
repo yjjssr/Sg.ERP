@@ -44,21 +44,13 @@ let driveCardRecognize = function(param) { //上传的行驶证识别
     })
   })
 }
-let updateAutoPartsPic = function(param) { //更新采购单
+let updateVPODetail = function(param) { //更新采购单
   return new Promise((resolve,reject)=>{
-    ajax.post('/api/Staff/UpdateAutoPartsPic', param).then(res => {
+    ajax.post('/api/Staff/UpdateVPODetail', param).then(res => {
       if (res.state == 1) {
         resolve()
-        // Toast.success({
-        //   message: '更新成功',
-        //   zIndex: 2000
-        // })
       } else {
         reject(res.data)
-        // Toast.fail({
-        //   message: res.data,
-        //   zIndex: 2000
-        // })
       }
     })
   })
@@ -68,17 +60,9 @@ let addVPO = function(param) { //新增采购单
   return new Promise((resolve,reject)=>{
     ajax.post('/api/Staff/AddVPO', param).then(res => {
       if (res.state == 1) {
-        resolve()
-        // Toast.success({
-        //   message: '新增成功',
-        //   zIndex: 2000
-        // })
+        resolve()       
       } else {
-        reject(res.data)
-        // Toast.fail({
-        //   message: res.data,
-        //   zIndex: 2000
-        // })
+        reject(res.data)     
       }
     })
   })
@@ -428,6 +412,13 @@ Page({
           this.setData({
             [`submitParam.${key}`]: ''
           })
+          
+          if (!_this.data.isAdd) {
+            _this.setData({
+              [`submitParam.${key == 'VLMPic' ? 'MainIsReUpload' : 'ViceIsReUpload'}`]: 0
+            })
+          }
+
         }
       }
     })
@@ -543,17 +534,42 @@ Page({
     }else{
       let updateParam={
         VPO_ID: _this.data.detailObj.VPO_ID,
-        "BankNo": "",
-        "BankOwner": "",
-        "BankName": "",
-        "SupplierType": ""
+      }
+      if (Object.keys(information).length != 0){
+        let param={
+          "Owner": information.owner,
+          "Use_character": information.use_character,
+          "FileNo": information.file_no,
+          "PlateNo": information.plate_num,
+          "VehicleType": information.vehicle_type,
+          "Model": information.model,
+          "Address": information.addr,
+          "EngineNO": information.engine_num,
+          "RegisterDate": information.register_date,
+          "IssueDate": information.issue_date,
+        }
+        updateParam = { ...updateParam, ...param}
+
+
+      }
+      if (Object.keys(informationBack).length != 0){
+          let param={
+            "Appproved_passenger_capacity": informationBack.appproved_passenger_capacity,
+            "Gross_mass": informationBack.gross_mass,
+            "Unladen_mass": informationBack.unladen_mass,
+            "Traction_mass": informationBack.traction_mass,
+            "Approved_load": informationBack.approved_load,
+            "Inspection_record": informationBack.inspection_record,
+            "Overall_dimension": informationBack.overall_dimension,
+          }
+         updateParam = { ...updateParam, ...param }
       }
       submitParam = {
         ...submitParam,
         ...param,
         ...updateParam
       }
-      updateAutoPartsPic(submitParam).then(()=>{
+      updateVPODetail(submitParam).then(()=>{
         _this.setData({
           loadModal: false,
           isSubmit: false

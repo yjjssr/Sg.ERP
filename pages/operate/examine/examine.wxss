@@ -1,0 +1,15 @@
+/* pages/operate/examine/examine.wxss */
+.cu-list.menu>.cu-item{
+  padding: 15rpx 30rpx;
+}
+.my-action{
+  min-width: 175rpx;
+text-align: center;
+
+}
+button:not([size='mini']).action-button{
+  width:auto;
+}
+.cu-modal{
+  z-index: 9999;
+}

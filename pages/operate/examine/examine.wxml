@@ -1,0 +1,47 @@
+<!--pages/operate/examine/examine.wxml-->
+<cu-custom bgColor="bg-gradual-pink" isBack="{{true}}">
+  <view slot="content">财务审核</view>
+</cu-custom>
+<view>
+  <van-search placeholder="请输入客户名、销售名、金额数" use-action-slot bind:change="onChange">
+    <view slot="action" bind:tap="onSerach">搜索</view>
+  </van-search>
+  <view class="cu-list menu">
+    <view class="cu-item" wx:for="{{previewList}}" wx:key="index">
+     <view class="content">
+       <view class="text-xl text-black text-blod">{{item.ARB_PayObjectName}}</view>
+       <view class="text-lg text-grey">{{item.ARB_SrcBillNo}}</view>
+       <view class="text-sm text-grey">{{item.SO_SalesByName}}</view>
+     </view>
+     <view class="action my-action">
+      <view class="text-lg text-price text-red">{{item.SO_TotalAmount}}</view>
+      <button wx:if='{{item.ARB_BusinessStatusCode!="YWC"}}' class="cu-btn bg-green shadow action-button"  bindtap="onConfirm"  data-ARB_ID='{{item.ARB_ID}}' data-ARB_VersionNo="{{item.ARB_VersionNo}}" data-ReceiveTypeCode="{{item.ARB_ReceiveTypeCode}}"  data-username="{{item.ARB_PayObjectName}}">确认已收款</button>
+      <view wx:else class="cu-tag round bg-grey">已确认</view>
+     </view>
+    </view>
+  </view>
+</view>
+<view class="cu-modal {{radioModal?'show':''}}" catchtouchmove="true" bindtap="hideModal">
+  <view class="cu-dialog">
+    <radio-group class="block" bindchange="radioChange">
+      <view class="cu-list menu text-left">
+        <view class="cu-item" wx:for="{{paymentList}}" wx:key="index">
+          <label class="flex justify-between align-center flex-sub">
+            <view class="flex-sub">{{item.Text}}</view>
+            <radio class="round" value="{{item.Code}}" data-text="{{item.Text}}" checked="{{item.checked}}"></radio>
+          </label>
+        </view>
+      </view>
+    </radio-group>
+    <view class="cu-bar">
+      <button class="cu-btn  block bg-green shadow-blur round lg" bindtap="onSubmit">提交</button>
+    </view>
+  </view>
+</view>
+<van-toast id="van-toast" />
+<view class='cu-load load-modal' wx:if="{{loadModal}}">
+  <!-- <view class='cuIcon-emojifill text-orange'></view>
+  <image src='/images/logo.png' class='png' mode='aspectFit'></image> -->
+  <view wx:if="{{isSerachModal}}" class='gray-text'>查询中</view>
+  <view wx:else class='gray-text'>确认中</view>
+</view>

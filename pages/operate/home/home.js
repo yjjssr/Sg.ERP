@@ -104,6 +104,7 @@ let verifyCheck = function (list) {
     if (data.isCanDealARB) {
       list = list.concat({
         title: '财务审核',
+        name:'examine',
         color: 'brown',
         icon: 'refund',
         index: 5

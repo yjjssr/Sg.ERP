@@ -12,7 +12,8 @@
     "pages/operate/enquiry/enquiry",
     "pages/operate/enquiry/detail",
     "pages/operate/purchase/purchase",
-    "pages/operate/purchase/detail"
+    "pages/operate/purchase/detail",
+    "pages/operate/examine/examine"
   ],
   "window": {
     "backgroundTextStyle": "light",
