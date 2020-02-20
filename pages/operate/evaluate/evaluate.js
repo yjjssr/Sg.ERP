@@ -76,7 +76,7 @@ let queryStoreType = function(param) {
   })
 }
 let getDisplayTreeList = function(param, statePickerArray) {
-  
+
   for (let item of param.values()) {
     if (!item.Level) {
       for (let [index, stateItem] of statePickerArray.entries()) {
@@ -88,7 +88,7 @@ let getDisplayTreeList = function(param, statePickerArray) {
   }
   return param
 }
-let updateVehicleValuationInfo=function(param){
+let updateVehicleValuationInfo = function(param) {
   ajax.post('/api/Staff/UpdateVehicleValuationInfo', param).then(res => {
     if (res.state == 1) {
       Toast.success('保存成功')
@@ -109,7 +109,7 @@ Page({
     collapseActive: '', //折叠面板的初始值
     subCollapseActive: [], //嵌套的内层折叠面板的初始值
     check: false, //每次弹出template Radio弹窗时清除上一次的操作记录
-    orgId:"",
+    orgId: "",
     // orgId:app.globalData.customInfo.reList[0].Org_ID,
     searchValue: '', //车架号
     movableAreaShow: false, //movableArea是否显示
@@ -129,11 +129,21 @@ Page({
     displayDisaDetailStructureTreeList: [], //展示在页面上的树形列表
     residualCarHandleType: [{ //残车处理方式
       name: '报废',
-      code: 'BF'
     }, {
       name: '入库',
       code: 'RK'
     }],
+    scrapType: [{
+      name: '直接',
+      code: 'ZJBF'
+    }, {
+      name: '破拆',
+      code: 'PCBF'
+    }, {
+      name: '拆解',
+      code: 'BF'
+    }],
+
     saleType: [{ //残车入库后的售卖方式
       name: '★',
       code: 'DB'
@@ -160,7 +170,7 @@ Page({
     // index: 0
     saveStructureList: [], //保存时所要用到的数组
     allCheckStatus: [], //底部全选的按钮的选中状态
-    TemplateCode:''//所选择的模板的code
+    TemplateCode: '' //所选择的模板的code
   },
   onLoad: function() {
     let _this = this
@@ -192,7 +202,7 @@ Page({
         disaTempList: res
       })
     })
-    let multiArray = [_this.data.residualCarHandleType, _this.data.saleType]
+    let multiArray = [_this.data.residualCarHandleType]
     _this.setData({
       residualCarAndSaleMultiArray: multiArray
     })
@@ -373,7 +383,7 @@ Page({
     let _this = this
     _this.setData({
       loadModal: true,
-      TemplateCode:event.detail.value
+      TemplateCode: event.detail.value
     })
     let param = {
       OrgID: _this.data.orgId,
@@ -392,22 +402,6 @@ Page({
         copyedDisaStructureList,
         displayDisaDetailStructureTreeList: treeList
       })
-
-      // _this.setData({
-      //   displayDisaDetailStructureTreeList: treeList
-      // })
-
-      console.log("-------")
-      console.log(treeList)
-      console.log(treeList.length)
-      // console.log(_this.data.disaDetailStructureTreeList)
-      // console.log(displayDisaDetailStructureTreeList)
-
-
-
-
-      // let test = Tools.parseTreeData(_this.data.disaDetailObj.res, "StructureID", "ParentID","StructureName")
-
       if (_this.data.disaDetailObj.VVB_Warehouse) {
         return queryStoreType({
           WB_ID: _this.data.disaDetailObj.VVB_Warehouse
@@ -421,20 +415,40 @@ Page({
         storeTypeList: res
       })
       let handleTypeIndex = []
-      for (let [index, item] of _this.data.residualCarHandleType.entries()) {
-        if (item.code == _this.data.disaDetailObj.VVB_TypeCode) {
-          handleTypeIndex.push(index)
-          break;
+      let {residualCarAndSaleMultiArray}=_this.data
+      
+      // for (let [index, item] of _this.data.residualCarHandleType.entries()) {
+      //   if (item.code == _this.data.disaDetailObj.VVB_TypeCode) {
+      //     handleTypeIndex.push(index)
+      //     break;
+      //   }
+      // }
+      
+   
+      if ("RK" != _this.data.disaDetailObj.VVB_TypeCode){
+        handleTypeIndex[0]=0
+        for (let [index, item] of _this.data.scrapType.entries()) {
+          if (item.code == _this.data.disaDetailObj.VVB_TypeCode) {
+            handleTypeIndex[1] = index
+            break;
+          }
         }
-      }
-      for (let [index, item] of _this.data.saleType.entries()) {
-        if (item.code == _this.data.disaDetailObj.VA_SaleTypeCode) {
-          handleTypeIndex.push(index)
-          break;
+        residualCarAndSaleMultiArray[1] = _this.data.scrapType
+      }else{
+        handleTypeIndex[0]=1
+        for (let [index, item] of _this.data.saleType.entries()) {
+          if (item.code == _this.data.disaDetailObj.VA_SaleTypeCode) {
+            handleTypeIndex[1] = index
+            break;
+          }
         }
+        residualCarAndSaleMultiArray[1] = _this.data.saleType
       }
+      
+      
       _this.setData({ //获取残车处理方式的二级picker初始值
-        residualCarAndSaleMultiIndex: handleTypeIndex
+        residualCarAndSaleMultiIndex: handleTypeIndex,
+        residualCarAndSaleMultiArray
       })
       let storeAndTypeMultiIndex = []
       for (let [index, item] of _this.data.storeList.entries()) {
@@ -485,9 +499,18 @@ Page({
     switch (e.detail.column) {
       case 0:
         data.residualCarAndSaleMultiIndex[1] = 0
-        switch (data.residualCarAndSaleMultiIndex[0]) {
+        // switch (data.residualCarAndSaleMultiIndex[0]) {
+        //   case 0:
+        //     data.residualCarAndSaleMultiArray[1] = []
+        //     break;
+        //   case 1:
+        //     // let saleTypeArray = _this.data.saleType.map(item => item.name)
+        //     data.residualCarAndSaleMultiArray[1] = _this.data.saleType
+        //     break;
+        // }
+        switch (e.detail.value) {
           case 0:
-            data.residualCarAndSaleMultiArray[1] = []
+            data.residualCarAndSaleMultiArray[1] = _this.data.scrapType
             break;
           case 1:
             // let saleTypeArray = _this.data.saleType.map(item => item.name)
@@ -537,7 +560,7 @@ Page({
     this.setData({
       remark: e.detail.value
     })
-    
+
   },
   onDisaDetailChange(e) { //获取搜索构件的搜索值
 
@@ -624,20 +647,20 @@ Page({
 
       }
     }
-   
-   
-    for (let item of new_copyedDisaStructureList){//如果二级没有child则在其对应的一级children中删除它
+
+
+    for (let item of new_copyedDisaStructureList) { //如果二级没有child则在其对应的一级children中删除它
       let hasChild = item.children && item.children.length
-      if (item.Level == 2 && !hasChild){
-        if (map[item.ParentID].children){
+      if (item.Level == 2 && !hasChild) {
+        if (map[item.ParentID].children) {
           map[item.ParentID].children = map[item.ParentID].children.filter(twoLevelItem => twoLevelItem.StructureID != item.StructureID)
         }
-       
+
         // map[item.ParentID].removeChild=true
-       }
+      }
     }
     let displayDisaDetailStructureTreeList = new_copyedDisaStructureList.filter(item => {
-      if (!item.ParentID && item.children && item.children.length != 0) {//取出有子元素的一级
+      if (!item.ParentID && item.children && item.children.length != 0) { //取出有子元素的一级
         return item;
       }
     })
@@ -852,10 +875,22 @@ Page({
             }
             return obj
           })
-          let DealType = _this.data.residualCarHandleType[_this.data.residualCarAndSaleMultiIndex[0]].code
-          let SaleType = DealType != "BF" ? _this.data.saleType[_this.data.residualCarAndSaleMultiIndex[1]].code : ''
+          let { residualCarAndSaleMultiIndex, residualCarAndSaleMultiArray}=_this.data
+          let DealType 
+          let SaleType
+          if (residualCarAndSaleMultiIndex[0]==0){
+            DealType = residualCarAndSaleMultiArray[1][residualCarAndSaleMultiIndex[1]].code
+            SaleType=""
+          }else{
+            DealType = residualCarAndSaleMultiArray[0][residualCarAndSaleMultiIndex[0]].code
+            SaleType = residualCarAndSaleMultiArray[1][residualCarAndSaleMultiIndex[1]].code
+          }
+          // let DealType = _this.data.residualCarHandleType[_this.data.residualCarAndSaleMultiIndex[0]].code
+          // let SaleType = DealType != "BF" ? _this.data.saleType[_this.data.residualCarAndSaleMultiIndex[1]].code : ''
           let param = {
-            "JsonText": JSON.stringify({ qList }),
+            "JsonText": JSON.stringify({
+              qList
+            }),
             "Remark": _this.data.remark,
             "DealType": DealType,
             "SaleType": SaleType,
@@ -871,10 +906,10 @@ Page({
         }
       }
     })
-  
-  
-   
-  
+
+
+
+
   },
   preventBubble() {
     return

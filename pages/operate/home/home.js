@@ -131,34 +131,35 @@ let verifyCheck = function (list) {
 Component({
   options: {
     addGlobalClass: true,
+    
   },
   /**
    * 组件的属性列表
    */
   properties: {
-    elements:{
-      type:Array,
-      default:[{}]
-    }
+    // elements:{
+    //   type:Array,
+    //   default:[{}]
+    // }
   },
 
   /**
    * 组件的初始数据
    */
   data: {
-    // elements: [{
-    //   title: '查整车',
-    //   name: 'entire',
-    //   color: 'blue',
-    //   icon: 'explore',
-    //   index:1
-    // }, {
-    //   title: '查配件',
-    //   name: 'portion',
-    //   color: 'purple',
-    //   icon: 'explore',
-    //   index:2
-    // }],
+    elements: [{
+      title: '查整车',
+      name: 'entire',
+      color: 'blue',
+      icon: 'explore',
+      index: 1
+    }, {
+      title: '查配件',
+      name: 'portion',
+      color: 'purple',
+      icon: 'explore',
+      index: 2
+    }],
     cardCur: 0,
     swiperList: [{
       url: '../../../images/swiper/back.jpg'
@@ -200,14 +201,20 @@ Component({
   },
   lifetimes:{
     ready:function(){
+      console.log(wx.getStorageSync("orgId")+"-----------------")
       let _this = this
-      if (wx.getStorageSync("orgIdChanged")) {
-        verifyCheck(_this.data.elements).then(data => {
-          _this.setData({
-            elements: data
-          })
+      verifyCheck(_this.data.elements).then(data => {
+        _this.setData({
+          elements: data
         })
-      }
+      })
+      // if (wx.getStorageSync("orgIdChanged")) {
+      //   verifyCheck(_this.data.elements).then(data => {
+      //     _this.setData({
+      //       elements: data
+      //     })
+      //   })
+      // }
     }
 
    

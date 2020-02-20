@@ -43,7 +43,7 @@ Component({
           organizationPicker: app.globalData.customInfo.reList
         })
       }else{
-        customReadyCallBack=res=>{
+        app.customReadyCallBack=res=>{
           this.setData({
             customInfo: res.customInfo,
             organizationPicker: res.customInfo.reList
@@ -51,21 +51,21 @@ Component({
         
         }
       }
-      console.log(this.data.organizationPicker)
+  
+      
+     },
+    ready: function (){
       let orgId = wx.getStorageSync("orgId")
       console.log(orgId)
-      for (let i = 0; i < this.data.organizationPicker.length;i++){
-        if (this.data.organizationPicker[i].Org_ID == orgId){
-         this.setData({
-           index:i
-         })
-         break;
+      for (let i = 0; i < this.data.organizationPicker.length; i++) {
+        if (this.data.organizationPicker[i].Org_ID == orgId) {
+          this.setData({
+            index: i
+          })
+          break;
         }
       }
-      // let orgObj = _this.data.organizationPicker.find((item, index) => {
-      //   return orgId== item.Org_ID
-      // })
-     }
+    }
   },
 
   /**

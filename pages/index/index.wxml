@@ -13,7 +13,7 @@
 </view> -->
 
 
-<operate wx:if="{{PageCur=='basics'}}"  elements="{{elements}}"></operate>
+<operate wx:if="{{PageCur=='basics'}}"></operate>
 <about wx:if="{{PageCur=='about'}}"></about>
 
 <view class="cu-bar tabbar bg-white shadow foot">
