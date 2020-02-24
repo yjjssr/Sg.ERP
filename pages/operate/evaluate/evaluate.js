@@ -946,8 +946,26 @@ Page({
           })
           // let test1 = _this.data.statePickerArray
           // let test2 = _this.data.saveStructureList
+          if (_this.data.saveStructureList.length==0){
+            _this.setData({
+              loadModal: false
+            })
+            Toast.fail({
+              message: '请至少勾选一条数据',
+              zIndex: 2000
+            })
+           
+            return
+          }
           if(_this.data.saveStructureList.some(item => !item.stateIndex && item.stateIndex!=0)){
-            Toast.fail('请先选择类型')
+            _this.setData({
+              loadModal: false
+            })
+            Toast.fail({
+              message: '请先选择类型',
+              zIndex: 2000
+            })
+           
             return
           }
           let qList = _this.data.saveStructureList.map(item => {
@@ -994,7 +1012,11 @@ Page({
           updateVehicleValuationInfo(param).then(()=>{
             
             _this.setData({
-              loadModal:false
+              loadModal:false,
+              movableAreaShow:false,
+              TabCur:0,
+              TemplateCode:'',//清除上次模板选择弹窗的记录
+              check: false//清除上次模板选择弹窗的选中状态
             })
             Toast.success("提交成功")
           })
