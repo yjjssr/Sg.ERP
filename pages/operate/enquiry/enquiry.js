@@ -50,16 +50,19 @@ Page({
         code: 'ywc',
     }],
     stateIndex:0,
-    previewList:[]
+    previewList:[],
+    isCanPrice:false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let {isCanPrice}=options
     this.setData({
       'searchParam.TimeStart':Tools.getCurrentMonthFirst(),
-      'searchParam.TimeEnd': Tools.getCurrentMonthLast()
+      'searchParam.TimeEnd': Tools.getCurrentMonthLast(),
+      isCanPrice
     })
   },
 
@@ -147,8 +150,9 @@ Page({
       loadModal: true
     })
     let { vrfqid, statusname } = e.currentTarget.dataset
+    let {isCanPrice}=_this.data
     wx.navigateTo({
-      url: `./detail?vrfqId=${vrfqid}&statusName=${statusname}`,
+      url: `./detail?vrfqId=${vrfqid}&statusName=${statusname}&isCanPrice=${isCanPrice}`,
       success:function(){
         _this.setData({
           loadModal: false

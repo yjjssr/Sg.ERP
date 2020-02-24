@@ -63,13 +63,14 @@ Page({
    */
   onLoad: function (options) {
     let _this=this
-    let { vrfqId, statusName}=options
+    let { vrfqId, statusName,isCanPrice}=options
     _this.setData({
       vrfqId,
       statusName,
       openId: wx.getStorageSync("openId"),
       loadModal:true,
-      isSerachModal:true
+      isSerachModal:true,
+      isCanPrice: isCanPrice === "false" ? false : true
     })
     let param={
       OpenID: _this.data.openId,
@@ -86,6 +87,17 @@ Page({
       })
     })
   
+  },
+  onUnload:function(){
+   if(this.data.statusName=='待报价'&&this.data.isCanPrice){
+     let pages = getCurrentPages();
+     if (pages.length > 1) { //说明有上一页存在
+       //上一个页面实例对象
+       let prePage = pages[pages.length - 2];
+      
+       prePage.submitForm()
+     }
+   }
   },
   previewImage: function (e) {
     let _this = this

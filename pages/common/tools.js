@@ -1,6 +1,5 @@
 export default {
   parseTreeData(list, key, parentKey, nameKey) {
-
     //创建一个对象命名为map
     let map = {}
     //通过遍历把list中的元素放到map对象中

@@ -20,3 +20,14 @@ height: calc(60rpx + env(safe-area-inset-bottom) / 3);
 .cu-tag+.cu-tag{
   margin-left: 0;
 }
+.cu-list.menu-avatar>.cu-item {
+min-height: 180rpx;
+border-bottom: 1rpx solid #ddd;
+
+}
+.fixed-wrap{
+  position: absolute;
+width: 100%;
+top: 0;
+
+}

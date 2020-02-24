@@ -2,30 +2,97 @@
 const ajax = require('../common/ajax.js')
 const app = getApp()
 import Toast from '../../miniprogram_npm/@vant/weapp/toast/toast';
-let isCertification = function(_this) {
-  if (app.globalData.loginInfo){
-    _this.setData({
-      isCertification: app.globalData.loginInfo.isAuthentication
-    })
-  }else{
+let login = function(param) {
+  return new Promise((resolve,rject)=>{
     ajax.post('/api/Staff/Login', { //根据login的返回结果来决定是否需要跳转到登录
       OpenID: wx.getStorageSync("openId")
     }).then(res => {
       if (res.state == 1) {
         let resData = res.data
-        _this.setData({
-          isCertification: resData.isAuthentication
-        })
-      
+        app.globalData.loginInfo = resData
+        resolve()
+
       } else {
         Toast.fail(res.data);
-        
+
       }
     })
-  }
- 
+  })
+  
+}
+let isCertification = function(_this) {
+  return new Promise((resolve, rject) => {
+    if (app.globalData.loginInfo) {
+      // app.globalData.loginInfo.isAuthentication = false
+
+      _this.setData({
+        isCertification: app.globalData.loginInfo.isAuthentication
+      })
+      // console.log(_this.data)
+    } else {
+      ajax.post('/api/Staff/Login', { //根据login的返回结果来决定是否需要跳转到登录
+        OpenID: wx.getStorageSync("openId")
+      }).then(res => {
+        if (res.state == 1) {
+          let resData = res.data
+          app.globalData.loginInfo = resData
+          // res.data.isAuthentication=false
+          _this.setData({
+            isCertification: resData.isAuthentication
+          })
+          resolve()
+
+          // console.log(_this.data)
+
+        } else {
+          Toast.fail(res.data);
+
+        }
+      })
+    }
+  })
 
 
+
+
+
+}
+let registerMember = function(userInfo) {
+  return new Promise((resolve, rject) => {
+    let paramObj = {
+      "OpenID": wx.getStorageSync("openId"),
+      "Avatar": userInfo.avatarUrl,
+      "Nickname": userInfo.nickName,
+      "Gender": userInfo.gender,
+      "Province": userInfo.province,
+      "City": userInfo.city,
+    }
+    if (app.globalData.unionId) {
+      paramObj.UnionID = app.globalData.unionId
+      ajax.post('/api/Staff/RegisterMember', paramObj).then(res => {
+        if (res.state == 1) {
+          resolve(res)
+        } else {
+          console.log(注册失败)
+          rject(res)
+        }
+
+      })
+    } else {
+      app.unionIdReadyCallback = res => {
+        paramObj.UnionID = res.unionId
+        ajax.post('/api/Staff/RegisterMember', paramObj).then(res => {
+          if (res.state == 1) {
+            resolve(res)
+          } else {
+            console.log(注册失败)
+            rject(res)
+          }
+        })
+
+      }
+    }
+  })
 }
 let certification = function(_this) {
   if (!_this.data.isCertification) {
@@ -35,9 +102,12 @@ let certification = function(_this) {
     }
     ajax.post('/api/Staff/Certificate', paramObj).then(res => {
       if (res.state == 1) {
-        wx.reLaunch({
-          url: '../index/index',
+        login().then(()=>{
+          wx.reLaunch({
+            url: '../index/index',
+          })
         })
+        
       } else {
         Toast.fail(res.data);
       }
@@ -47,6 +117,8 @@ let certification = function(_this) {
       url: '../index/index',
     })
   }
+
+
 
 }
 
@@ -76,56 +148,9 @@ Page({
         isCertification(_this)
       }
     }
+    console.log(_this.data)
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function() {
-
-  },
   onPhoneChange: function(e) {
     let phoneNumber = e.detail
     let phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
@@ -144,11 +169,12 @@ Page({
     let _this = this
     this.setData({
       userInfo: e.detail.userInfo,
-      hasUserInfo: true
+      // hasUserInfo: true
     })
     app.globalData.encryptedData = e.detail.encryptedData
     app.globalData.iv = e.detail.iv
     app.globalData.userInfo = e.detail.userInfo
+    console.log(app.globalData)
     let paramObj = {
       "encryptedData": app.globalData.encryptedData,
       "iv": app.globalData.iv,
@@ -158,7 +184,17 @@ Page({
       ajax.post("/api/WX/Decrypt", paramObj).then(res => {
         if (res.state == 1) {
           app.globalData.unionId = res.data.unionId
-          certification(_this)
+          if (!app.globalData.loginInfo.isRegister) {
+            registerMember(app.globalData.userInfo).then(() => {
+              certification(_this)
+             
+            })
+          }else{
+            wx.reLaunch({
+              url: '../index/index',
+            })
+          }
+
         } else {
           console.log("解码unionId失败")
         }
@@ -170,7 +206,16 @@ Page({
         ajax.post("/api/WX/Decrypt", paramObj).then(res => {
           if (res.state == 1) {
             app.globalData.unionId = res.data.unionId
-            certification(_this)
+            if (!app.globalData.loginInfo.isRegister) {
+              registerMember(app.globalData.userInfo).then(() => {
+                certification(_this)
+              })
+            }else{
+              wx.reLaunch({
+                url: '../index/index',
+              })
+            }
+            // certification(_this)
           } else {
             console.log("解码unionId失败")
           }

@@ -1,6 +1,7 @@
 // pages/operate/evaluate/evaluate.js
 const app = getApp()
 const ajax = require('../../common/ajax.js')
+const config = require('../../common/config.js')
 import Toast from '../../../miniprogram_npm/@vant/weapp/toast/toast';
 import Tools from '../../common/tools.js'
 let queryBasicInfo = function(param) {
@@ -77,25 +78,33 @@ let queryStoreType = function(param) {
 }
 let getDisplayTreeList = function(param, statePickerArray) {
 
-  for (let item of param.values()) {
+
+  for (let item of param) {
     if (!item.Level) {
       for (let [index, stateItem] of statePickerArray.entries()) {
-        if (stateItem.code == item.StateCode) {
+        if (item.StateCode&&stateItem.code == item.StateCode) {
           item.stateIndex = index
         }
       }
     }
   }
+  
   return param
 }
 let updateVehicleValuationInfo = function(param) {
-  ajax.post('/api/Staff/UpdateVehicleValuationInfo', param).then(res => {
-    if (res.state == 1) {
-      Toast.success('保存成功')
-    } else {
-      Toast.fail(res.data)
-    }
+  return new Promise((resolve,reject)=>{
+    ajax.post('/api/Staff/UpdateVehicleValuationInfo', param).then(res => {
+     
+      if (res.state == 1) {
+        resolve()
+        // Toast.success('保存成功')
+      } else {
+        Toast.fail(res.data)
+      }
+    })
   })
+  
+
 }
 Page({
 
@@ -292,9 +301,7 @@ Page({
         _this.setData({
           searchValue: res.result
         })
-        // wx.nextTick(() => {
-        //   _this.onSearch()
-        // })
+        _this.onSearch()
 
       }
     })
@@ -346,22 +353,60 @@ Page({
       }
     })
   },
-  ChooseImage() {
+  ChooseImage(e) {
     let _this = this
     wx.chooseImage({
-      count: 9, //默认9
+      count: 1, //默认9
       sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-      sourceType: ['album'], //从相册选择
+      sourceType: ['album', 'camera'], //从相册选择
       success: (res) => {
-        if (this.data.pictureList.length != 0) {
-          this.setData({
-            pictureList: this.data.pictureList.concat(res.tempFilePaths)
-          })
-        } else {
-          this.setData({
-            pictureList: res.tempFilePaths
-          })
-        }
+        wx.uploadFile({
+          url: config.host + '/api/Staff/UploadFile', //仅为示例，非真实的接口地址
+          filePath: res.tempFilePaths[0],
+          name: 'file',
+          formData: {
+            'program': 'logs'
+          },
+          success(res) {
+          
+            if (res.statusCode != 200) {
+              Toast.fail("图片上传失败")
+              return
+            }
+            const result = JSON.parse(res.data)
+            if (result.state != 1) {
+              Toast.fail("图片上传失败")
+              return
+            }
+            const url = result.data.path
+           
+            // if (_this.data.picturesList.length != 0) {
+            //   _this.data.picturesList.splice(e.currentTarget.dataset.index, 1, url)
+            //   _this.setData({
+            //     picturesList: _this.data.picturesList
+            //   })
+
+            // } else {
+            //   _this.setData({
+            //     picturesList: [url]
+            //   })
+            // }
+
+            if (_this.data.pictureList.length != 0) {
+              _this.setData({
+                pictureList: _this.data.pictureList.concat(url)
+              })
+            } else {
+              _this.setData({
+                pictureList: [url]
+              })
+            }
+            //do something
+          }
+        })
+
+       
+       
 
 
       }
@@ -394,7 +439,7 @@ Page({
       // let copyedDisaStructureList = Tools.deepCopy(res.res)//不可用是因为返回的个数太多导致报错
       let copyedDisaStructureList = JSON.parse(JSON.stringify(res.res)) //复制返回的数组
       let indexedDisaStructureList = getDisplayTreeList(copyedDisaStructureList, _this.data.statePickerArray) //为数组添加picker下标
-      let treeList = Tools.parseTreeData(indexedDisaStructureList, "StructureID", "ParentID", "StructureName") //将数组解析为树形
+      let treeList = Tools.parseTreeData(indexedDisaStructureList, "StructureID", "ParentID", "StructureName") //将数组解析为树形    
       // let treeList = Tools.parseTreeData(res.res, "StructureID", "ParentID", "StructureName")
       _this.setData({
         disaDetailObj: res,
@@ -403,8 +448,12 @@ Page({
         displayDisaDetailStructureTreeList: treeList
       })
       if (_this.data.disaDetailObj.VVB_Warehouse) {
-        return queryStoreType({
+        return queryStoreType({   //获取仓位
           WB_ID: _this.data.disaDetailObj.VVB_Warehouse
+        })
+      }else{
+        return queryStoreType({   //获取仓位
+          WB_ID: _this.data.storeList[0].WH_ID
         })
       }
 
@@ -414,6 +463,7 @@ Page({
       _this.setData({
         storeTypeList: res
       })
+      
       let handleTypeIndex = []
       let {residualCarAndSaleMultiArray}=_this.data
       
@@ -424,59 +474,87 @@ Page({
       //   }
       // }
       
-   
-      if ("RK" != _this.data.disaDetailObj.VVB_TypeCode){
-        handleTypeIndex[0]=0
-        for (let [index, item] of _this.data.scrapType.entries()) {
-          if (item.code == _this.data.disaDetailObj.VVB_TypeCode) {
-            handleTypeIndex[1] = index
-            break;
+      if (_this.data.disaDetailObj.VVB_TypeCode){
+        if ("RK" != _this.data.disaDetailObj.VVB_TypeCode) {//残车处理方式一级为入库时
+          handleTypeIndex[0] = 0
+          for (let [index, item] of _this.data.scrapType.entries()) {
+            if (item.code == _this.data.disaDetailObj.VVB_TypeCode) {
+              handleTypeIndex[1] = index
+              break;
+            }
           }
-        }
-        residualCarAndSaleMultiArray[1] = _this.data.scrapType
-      }else{
-        handleTypeIndex[0]=1
-        for (let [index, item] of _this.data.saleType.entries()) {
-          if (item.code == _this.data.disaDetailObj.VA_SaleTypeCode) {
-            handleTypeIndex[1] = index
-            break;
+          residualCarAndSaleMultiArray[1] = _this.data.scrapType
+        } else {//参数处理方式一级为报废时
+          handleTypeIndex[0] = 1
+          for (let [index, item] of _this.data.saleType.entries()) {
+            if (item.code == _this.data.disaDetailObj.VA_SaleTypeCode) {
+              handleTypeIndex[1] = index
+              break;
+            }
           }
+          residualCarAndSaleMultiArray[1] = _this.data.saleType
         }
-        residualCarAndSaleMultiArray[1] = _this.data.saleType
-      }
-      
-      
-      _this.setData({ //获取残车处理方式的二级picker初始值
-        residualCarAndSaleMultiIndex: handleTypeIndex,
-        residualCarAndSaleMultiArray
-      })
-      let storeAndTypeMultiIndex = []
-      for (let [index, item] of _this.data.storeList.entries()) {
-        if (item.WH_ID == _this.data.disaDetailObj.VVB_Warehouse) {
-          storeAndTypeMultiIndex.push(index)
-          break
-        }
-      }
 
-      for (let [index, item] of _this.data.storeTypeList.entries()) {
-        if (item.WHB_ID == _this.data.disaDetailObj.VVB_Bin) {
-          storeAndTypeMultiIndex.push(index)
-          break
-        }
+
+        _this.setData({ //获取残车处理方式的二级picker初始值
+          residualCarAndSaleMultiIndex: handleTypeIndex,
+          residualCarAndSaleMultiArray
+        })
+      }else{
+        residualCarAndSaleMultiArray[1] = _this.data.scrapType//若VVB_TypeCode为空时的默认值
+        _this.setData({ 
+          residualCarAndSaleMultiIndex: [0,0],
+          residualCarAndSaleMultiArray
+        })
       }
-      if (storeAndTypeMultiIndex.length == 1) {
+      
+      let storeAndTypeMultiIndex = []
+      
+      if (_this.data.disaDetailObj.VVB_Warehouse){
+       
+        for (let [index, item] of _this.data.storeList.entries()) {
+          if (item.WH_ID == _this.data.disaDetailObj.VVB_Warehouse) {
+            storeAndTypeMultiIndex.push(index)
+            break
+          }
+        }
+      }else{
+        storeAndTypeMultiIndex[0]=0
+      }
+      if (_this.data.disaDetailObj.VVB_Bin){
+        for (let [index, item] of _this.data.storeTypeList.entries()) {
+          // if (item.WHB_ID == _this.data.disaDetailObj.VVB_Bin) {
+          //   storeAndTypeMultiIndex.push(index)
+          //   break
+          // }
+          if (item.WHB_Code == _this.data.disaDetailObj.VVB_Bin) {
+            storeAndTypeMultiIndex.push(index)
+            break
+          }
+          
+        }
+      }else{
         storeAndTypeMultiIndex[1] = 0
       }
+
       _this.setData({ //获取仓库及仓位的二级picker初始值
         storeAndTypeMultiIndex: storeAndTypeMultiIndex
       })
-      let multiPickerStoreTypeList = _this.data.storeTypeList.map(item => {
-        item.WH_Name = item.WHB_Name
-        return item
-      })
-      _this.setData({
-        storeAndTypeMultiArray: [_this.data.storeList, multiPickerStoreTypeList]
-      })
+      // let multiPickerStoreTypeList
+      if (_this.data.storeTypeList){
+        let multiPickerStoreTypeList = _this.data.storeTypeList.map(item => {
+          item.WH_Name = item.WHB_Name
+          return item
+        })
+        _this.setData({
+          storeAndTypeMultiArray: [_this.data.storeList, multiPickerStoreTypeList]
+        })
+      }else{
+        _this.setData({
+          storeAndTypeMultiArray: [_this.data.storeList,[]]
+        })
+      }
+      
       _this.setData({
         loadModal: false
       })
@@ -863,6 +941,15 @@ Page({
       confirmText: '确定',
       success: res => {
         if (res.confirm) {
+          _this.setData({
+            loadModal:true
+          })
+          // let test1 = _this.data.statePickerArray
+          // let test2 = _this.data.saveStructureList
+          if(_this.data.saveStructureList.some(item => !item.stateIndex && item.stateIndex!=0)){
+            Toast.fail('请先选择类型')
+            return
+          }
           let qList = _this.data.saveStructureList.map(item => {
             let obj = {
               APA_ID: '',
@@ -871,10 +958,11 @@ Page({
               APN_Name: item.PieceName,
               UnitCostPrice: item.Price,
               UnitCostNumber: item.ValNum,
-              StatusCode: _this.data.statePickerArray[item.stateIndex].code,
+              StatusCode: item.stateIndex||item.stateIndex==0 ? _this.data.statePickerArray[item.stateIndex].code:item.StateCode,
             }
             return obj
           })
+          
           let { residualCarAndSaleMultiIndex, residualCarAndSaleMultiArray}=_this.data
           let DealType 
           let SaleType
@@ -902,7 +990,14 @@ Page({
             "OrgID": wx.getStorageSync('orgId'),
             "TemplateCode": _this.data.TemplateCode,
           }
-          updateVehicleValuationInfo(param)
+         
+          updateVehicleValuationInfo(param).then(()=>{
+            
+            _this.setData({
+              loadModal:false
+            })
+            Toast.success("提交成功")
+          })
         }
       }
     })

@@ -33,6 +33,7 @@ App({
             if (res.state == 1) {
               let resData = res.data
               wx.setStorageSync("openId", resData.openid) //缓存openId
+              // wx.setStorageSync("openId", "o5S6X5Ofa6h0ORhW4Lv83HZS4iYc")
               wx.setStorageSync("session_key", resData.session_key) //缓存session_key
               if (_this.openIdAndKeyReadyCallback) {
                 _this.openIdAndKeyReadyCallback(resData)
@@ -91,6 +92,7 @@ App({
                 if (res.state == 1) {
                   let resData = res.data
                   wx.setStorageSync("openId", resData.openid) //缓存openId
+                  // wx.setStorageSync("openId", "o5S6X5Ofa6h0ORhW4Lv83HZS4iYc")
                   wx.setStorageSync("session_key", resData.session_key) //缓存session_key
                   if (_this.openIdAndKeyReadyCallback) {
                     _this.openIdAndKeyReadyCallback(resData)

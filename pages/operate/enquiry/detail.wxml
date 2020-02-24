@@ -133,8 +133,9 @@
         <text class="text-grey">报价金额</text>
       </view>
       <view>
-        <text wx:if="{{statusname!='待报价'}}" class="text-grey">{{detailObj.VRFQ_TotalAmount?detailObj.VRFQ_TotalAmount:""}}</text>
-        <input wx:else type="number" class="my-input"  placeholder="请输入金额" value="{{detailObj.VRFQ_TotalAmount}}" bindinput="changePrice"></input>
+       <input wx:if="{{statusName=='待报价'&&isCanPrice}}" type="number" class="my-input"  placeholder="请输入金额" value="{{detailObj.VRFQ_TotalAmount}}" bindinput="changePrice"></input>
+        <text wx:else class="text-grey">{{detailObj.VRFQ_TotalAmount?detailObj.VRFQ_TotalAmount:""}}</text>
+       
       </view>
     </view>
     <view class="cu-item">
@@ -143,7 +144,7 @@
       </view>
       <view>
         <!-- <input class="my-input"  placeholder="请输入车辆VIN码或配件码" value="{{statusname=='待报价'?detailObj.User_Name:detailObj.VRFQ_Offerer}}" bindinput="changeParam" data-key="VIN"></input> -->
-        <text class="text-grey">{{statusname=='待报价'?detailObj.User_Name:detailObj.VRFQ_Offerer}}</text>
+        <text class="text-grey">{{statusName=='待报价'?detailObj.User_Name:detailObj.VRFQ_Offerer}}</text>
       </view>
     </view>
     <view class="cu-item">
@@ -152,10 +153,10 @@
       </view>
       <view>
          <!-- <input class="my-input"  placeholder="请输入车辆VIN码或配件码" value="{{statusname=='待报价'?detailObj.User_PhoneNo:detailObj.VRFQ_OfferPhone}}" bindinput="changeParam" data-key="VIN"></input> -->
-         <text class="text-grey">{{statusname=='待报价'?detailObj.User_PhoneNo:detailObj.VRFQ_OfferPhone}}</text>
+         <text class="text-grey">{{statusName=='待报价'?detailObj.User_PhoneNo:detailObj.VRFQ_OfferPhone}}</text>
       </view>
     </view>
-    <view class="btn-area bg-white" wx:if="{{statusname=='待报价'}}">
+    <view class="btn-area bg-white" wx:if="{{statusName=='待报价'&&isCanPrice}}">
      <button class="my-submit cu-btn bg-blue" bindtap="submitForm">提交</button>
     </view>
 

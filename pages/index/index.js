@@ -62,8 +62,8 @@ let isRelaunchToRegister = function() {
             OpenID: wx.getStorageSync("openId")
           }).then(res => {
             if (res.state == 1) {
-              app.globalData.loginInfo = resData
               let resData = res.data
+              app.globalData.loginInfo = resData
               if (!resData.isRegister) {
                 if (app.globalData.userInfo) {
                   registerMember(app.globalData.userInfo).then(() => {
@@ -193,6 +193,8 @@ Page({
     wx.removeStorageSync("orgIdChanged")//重新编译的时候要改变orgId的缓存,以此为标志来决定orgId是取初始化的还是改变后的，wx.getStorageSync不随重新编译而改变
     if (wx.getStorageInfoSync().keys.find(key => key == "openId")) {
       isRelaunchToRegister()
+
+
       // getCustomInfo().then(()=>{
       //   verifyCheck(_this.data.elements).then(data => {
       //     _this.setData({

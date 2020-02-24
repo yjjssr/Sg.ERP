@@ -31,6 +31,7 @@ Page({
     },
     previewList: [],
     isNav: false
+    // container:null
   },
 
   /**
@@ -48,6 +49,11 @@ Page({
   onShow: function() {
     app.isReLaunchToIndex() //判断openId是否过期，如果过期跳转到index
   },
+  // onReady() {
+  //   this.setData({
+  //     container: () => wx.createSelectorQuery().select('#my-main')
+  //   });
+  // },
 
   /**
    * 页面上拉触底事件的处理函数

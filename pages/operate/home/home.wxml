@@ -13,7 +13,7 @@
   </swiper>
   <view class='nav-list'>
     <block wx:if="{{item.length!=0}}">
-      <navigator open-type="navigate" hover-class='none' url="/pages/operate/{{item.name}}/{{item.name}}" class="nav-li bg-{{item.color}}" wx:for="{{elements}}" wx:key="index">
+      <navigator open-type="navigate" hover-class='none' url="/pages/operate/{{item.name}}/{{item.name}}{{item.name=='enquiry'?item.query:''}}" class="nav-li bg-{{item.color}}" wx:for="{{elements}}" wx:key="index">
         <view class="nav-title">{{item.title}}</view>
         <text class='cuIcon-{{item.icon}}'></text>
       </navigator>

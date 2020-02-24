@@ -1,51 +1,65 @@
 // pages/operate/home/home.js
 const ajax = require('../../common/ajax.js')
 import Toast from '../../../miniprogram_npm/@vant/weapp/toast/toast';
-let checkValRight = function (param) {
+// let checkValRight = function (param) {
+//   return new Promise((resolve, reject) => {
+//     ajax.post('/api/Staff/CheckValRight', param).then(res => {
+//       if (res.state == 1) {
+//         resolve(res.data)
+//       } else {
+//         Toast.fail({
+//           message: res.data,
+//           zIndex: 2000
+//         })
+//       }
+//     })
+//   })
+// }
+// let rightCheck = function (param) {
+//   return new Promise((resolve, reject) => {
+//     ajax.post('/api/Staff/RightCheck', param).then(res => {
+//       if (res.state == 1) {
+//         resolve(res.data)
+//       } else {
+//         Toast.fail({
+//           message: res.data,
+//           zIndex: 2000
+//         })
+//       }
+//     })
+//   })
+// }
+// let rightCheckVPO = function (param) {
+//   return new Promise((resolve, reject) => {
+//     ajax.post('/api/Staff/RightCheckVPO', param).then(res => {
+//       if (res.state == 1) {
+//         resolve(res.data)
+//       } else {
+//         Toast.fail({
+//           message: res.data,
+//           zIndex: 2000
+//         })
+//       }
+//     })
+//   })
+// }
+// let rightCheckARB = function (param) {
+//   return new Promise((resolve, reject) => {
+//     ajax.post('/api/Staff/RightCheckARB', param).then(res => {
+//       if (res.state == 1) {
+//         resolve(res.data)
+//       } else {
+//         Toast.fail({
+//           message: res.data,
+//           zIndex: 2000
+//         })
+//       }
+//     })
+//   })
+// }
+let allRightCheck=function(param){
   return new Promise((resolve, reject) => {
-    ajax.post('/api/Staff/CheckValRight', param).then(res => {
-      if (res.state == 1) {
-        resolve(res.data)
-      } else {
-        Toast.fail({
-          message: res.data,
-          zIndex: 2000
-        })
-      }
-    })
-  })
-}
-let rightCheck = function (param) {
-  return new Promise((resolve, reject) => {
-    ajax.post('/api/Staff/RightCheck', param).then(res => {
-      if (res.state == 1) {
-        resolve(res.data)
-      } else {
-        Toast.fail({
-          message: res.data,
-          zIndex: 2000
-        })
-      }
-    })
-  })
-}
-let rightCheckVPO = function (param) {
-  return new Promise((resolve, reject) => {
-    ajax.post('/api/Staff/RightCheckVPO', param).then(res => {
-      if (res.state == 1) {
-        resolve(res.data)
-      } else {
-        Toast.fail({
-          message: res.data,
-          zIndex: 2000
-        })
-      }
-    })
-  })
-}
-let rightCheckARB = function (param) {
-  return new Promise((resolve, reject) => {
-    ajax.post('/api/Staff/RightCheckARB', param).then(res => {
+    ajax.post('/api/Staff/AllRightCheck', param).then(res => {
       if (res.state == 1) {
         resolve(res.data)
       } else {
@@ -63,67 +77,118 @@ let verifyCheck = function (list) {
     OpenID: wx.getStorageSync("openId"),
     OrgID: wx.getStorageSync("orgId")
   }
-  console.log(list)
-  console.log(wx.getStorageSync("orgId"))
-  let p1 = checkValRight(param).then(data => {
-    if (data.isCanVal) {
-      list = list.concat({
-        title: '预评估',
-        name: 'evaluate',
-        color: 'cyan',
-        icon: 'evaluate',
-        index: 0
-      })
-    }
-  })
-  let p2 = rightCheck(param).then(data => {
-    if (data.isCanEnter) {
-      list = list.concat({
-        title: '查询价',
-        name: 'enquiry',
-        color: 'mauve',
-        icon: 'explore',
-        index: 3
-      })
+ 
+  // let p1 = checkValRight(param).then(data => {
+  //   if (data.isCanVal) {
+  //     list = list.concat({
+  //       title: '预评估',
+  //       name: 'evaluate',
+  //       color: 'cyan',
+  //       icon: 'evaluate',
+  //       index: 0
+  //     })
+  //   }
+  // })
+  // let p2 = rightCheck(param).then(data => {
+  //   if (data.isCanEnter) {
+  //     list = list.concat({
+  //       title: '查询价',
+  //       name: 'enquiry',
+  //       color: 'mauve',
+  //       icon: 'explore',
+  //       index: 3,
+  //       query: `?isCanPrice=${data.isCanPrice}`
+  //     })
 
-    }
-  })
-  let p3 = rightCheckVPO(param).then(data => {
-    if (data.isCanMakeVPO) {
-      list = list.concat({
-        title: '采购单',
-        name: 'purchase',
-        color: 'pink',
-        icon: 'list',
-        index: 4
-      })
+  //   }
+  // })
+  // let p3 = rightCheckVPO(param).then(data => {
+  //   if (data.isCanMakeVPO) {
+  //     list = list.concat({
+  //       title: '采购单',
+  //       name: 'purchase',
+  //       color: 'pink',
+  //       icon: 'list',
+  //       index: 4
+  //     })
 
-    }
-  })
-  let p4 = rightCheckARB(param).then(data => {
-    if (data.isCanDealARB) {
-      list = list.concat({
-        title: '财务审核',
-        name:'examine',
-        color: 'brown',
-        icon: 'refund',
-        index: 5
-      })
+  //   }
+  // })
+  // let p4 = rightCheckARB(param).then(data => {
+  //   if (data.isCanDealARB) {
+  //     list = list.concat({
+  //       title: '财务审核',
+  //       name:'examine',
+  //       color: 'brown',
+  //       icon: 'refund',
+  //       index: 5
+  //     })
 
-    }
-  })
+  //   }
+  // })
+ 
+
   return new Promise((resolve, reject) => {
-    Promise.all([p1, p2, p3, p4]).then(() => {
+    // Promise.all([p1, p2, p3, p4]).then(() => {
+    //   list = list.sort(function (a, b) {
+    //     return a.index - b.index
+    //   })
+    //   console.log("opetate home.js********")
+    //   console.log(list)
+    //   resolve(list)
+      
+    // })
+    allRightCheck(param).then(data => {
+      
+      if (data.isCanVal) {
+        list = list.concat({
+          title: '预评估',
+          name: 'evaluate',
+          color: 'cyan',
+          icon: 'evaluate',
+          index: 0
+        })
+      }
+      if (data.isCanEnter) {
+        list = list.concat({
+          title: '查询价',
+          name: 'enquiry',
+          color: 'mauve',
+          icon: 'explore',
+          index: 3,
+          query: `?isCanPrice=${data.isCanPrice}`
+         
+        })
+
+      }
+      if (data.isCanMakeVPO) {
+        list = list.concat({
+          title: '采购单',
+          name: 'purchase',
+          color: 'pink',
+          icon: 'list',
+          index: 4
+        })
+
+      }
+      if (data.isCanDealARB) {
+        list = list.concat({
+          title: '财务审核',
+          name: 'examine',
+          color: 'brown',
+          icon: 'refund',
+          index: 5
+        })
+
+      }
       list = list.sort(function (a, b) {
         return a.index - b.index
       })
-      console.log("opetate home.js********")
-      console.log(list)
+      
       resolve(list)
-      // _this.setData({
-      //   elements: list
-      // })
     })
+    
+
   })
 
 
@@ -163,11 +228,8 @@ Component({
     cardCur: 0,
     swiperList: [{
       url: '../../../images/swiper/back.jpg'
-    }, {
-      url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg'
-    }, {
-      url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big84001.jpg',
     }]
+    
   },
   /**
    * 组件的方法列表

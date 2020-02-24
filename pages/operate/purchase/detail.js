@@ -349,7 +349,7 @@ Page({
     wx.chooseImage({
       count: 1, //默认9
       sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-      sourceType: ['album'], //从相册选择
+      sourceType: ['album', 'camera'],
       success: (res) => {
         wx.uploadFile({
           url: config.host + '/api/Staff/UploadFile', //仅为示例，非真实的接口地址
@@ -379,6 +379,7 @@ Page({
               if(!_this.data.isAdd){
                 _this.setData({
                   [`submitParam.${key == 'VLMPic' ? 'MainIsReUpload' :'ViceIsReUpload'}`]:1
+                  
               })
               }
               
@@ -387,8 +388,13 @@ Page({
                 Config: config
               }).then(data => {
                 _this.setData({
-                  [key == 'VLMPic' ? 'information' : 'informationBack']: data.Data
+                  [key == 'VLMPic' ? 'information' : 'informationBack']: data.Data     
                 })
+                if (key == 'VLMPic'){
+                 _this.setData({
+                   'submitParam.Vin':data.Data.vin
+                 })
+                }
               })
             }
             console.log(_this.data.submitParam)
