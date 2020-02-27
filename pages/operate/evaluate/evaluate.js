@@ -88,6 +88,12 @@ let getDisplayTreeList = function(param, statePickerArray) {
       }
     }
   }
+  for(let item of param){
+    if (!item.Level && !item.stateIndex){
+      item.stateIndex = 0
+    }
+  
+  }
   
   return param
 }
@@ -503,7 +509,7 @@ Page({
       }else{
         residualCarAndSaleMultiArray[1] = _this.data.scrapType//若VVB_TypeCode为空时的默认值
         _this.setData({ 
-          residualCarAndSaleMultiIndex: [0,0],
+          residualCarAndSaleMultiIndex: [0,2],
           residualCarAndSaleMultiArray
         })
       }
@@ -523,14 +529,14 @@ Page({
       }
       if (_this.data.disaDetailObj.VVB_Bin){
         for (let [index, item] of _this.data.storeTypeList.entries()) {
-          // if (item.WHB_ID == _this.data.disaDetailObj.VVB_Bin) {
-          //   storeAndTypeMultiIndex.push(index)
-          //   break
-          // }
-          if (item.WHB_Code == _this.data.disaDetailObj.VVB_Bin) {
+          if (item.WHB_ID == _this.data.disaDetailObj.VVB_Bin) {
             storeAndTypeMultiIndex.push(index)
             break
           }
+          // if (item.WHB_Code == _this.data.disaDetailObj.VVB_Bin) {
+          //   storeAndTypeMultiIndex.push(index)
+          //   break
+          // }
           
         }
       }else{
@@ -772,9 +778,28 @@ Page({
   },
   callapseChange(e) {
     this.setData({
+      loadModal:true,
+      callapseModal:true
+    })
+    let { displayDisaDetailStructureTreeList, sideBarActive } = this.data
+    let subCollapseActive = []
+    if (`${e.detail}`){
+      let levelOneList = displayDisaDetailStructureTreeList[sideBarActive]
+      let levelTwoList = levelOneList.children[e.detail]
+      let levelThreeList = levelTwoList.children
+      for (let i = 0; i < levelThreeList.length; i++) {
+        subCollapseActive.push(i)
+      }
+      // displayDisaDetailStructureTreeList[sideBarActive]
+      
+    }
+    this.setData({
       collapseActive: e.detail,
-      subCollapseActive: []
+      subCollapseActive,
+      loadModal: false,
+      callapseModal: false
     });
+  
     // console.log("collapse的当前值为:" + e.detail)
     // console.log(e)
   },
@@ -946,27 +971,51 @@ Page({
           })
           // let test1 = _this.data.statePickerArray
           // let test2 = _this.data.saveStructureList
-          if (_this.data.saveStructureList.length==0){
-            _this.setData({
-              loadModal: false
-            })
-            Toast.fail({
-              message: '请至少勾选一条数据',
-              zIndex: 2000
-            })
+         
+          // if(_this.data.saveStructureList.some(item => !item.stateIndex && item.stateIndex!=0)){
+          //   _this.setData({
+          //     loadModal: false
+          //   })
+          //   Toast.fail({
+          //     message: '请先选择类型',
+          //     zIndex: 2000
+          //   })
            
-            return
+          //   return
+          // }
+          let { residualCarAndSaleMultiIndex, residualCarAndSaleMultiArray } = _this.data
+          let DealType
+          let SaleType
+          if (residualCarAndSaleMultiIndex[0] == 0) {
+            DealType = residualCarAndSaleMultiArray[1][residualCarAndSaleMultiIndex[1]].code
+            SaleType = ""
+          } else {
+            DealType = residualCarAndSaleMultiArray[0][residualCarAndSaleMultiIndex[0]].code
+            SaleType = residualCarAndSaleMultiArray[1][residualCarAndSaleMultiIndex[1]].code
           }
-          if(_this.data.saveStructureList.some(item => !item.stateIndex && item.stateIndex!=0)){
-            _this.setData({
-              loadModal: false
-            })
-            Toast.fail({
-              message: '请先选择类型',
-              zIndex: 2000
-            })
-           
-            return
+          if (DealType != 'ZJBF' && DealType != 'PCBF') {
+            if (_this.data.saveStructureList.length == 0) {
+              _this.setData({
+                loadModal: false
+              })
+              Toast.fail({
+                message: '请至少勾选一条数据',
+                zIndex: 2000
+              })
+
+              return
+            }
+            if (_this.data.saveStructureList.some(item => !item.Price)) {
+              _this.setData({
+                loadModal: false
+              })
+              Toast.fail({
+                message: '价格不能为空或0',
+                zIndex: 2000
+              })
+
+              return
+            }
           }
           let qList = _this.data.saveStructureList.map(item => {
             let obj = {
@@ -981,16 +1030,8 @@ Page({
             return obj
           })
           
-          let { residualCarAndSaleMultiIndex, residualCarAndSaleMultiArray}=_this.data
-          let DealType 
-          let SaleType
-          if (residualCarAndSaleMultiIndex[0]==0){
-            DealType = residualCarAndSaleMultiArray[1][residualCarAndSaleMultiIndex[1]].code
-            SaleType=""
-          }else{
-            DealType = residualCarAndSaleMultiArray[0][residualCarAndSaleMultiIndex[0]].code
-            SaleType = residualCarAndSaleMultiArray[1][residualCarAndSaleMultiIndex[1]].code
-          }
+        
+         
           // let DealType = _this.data.residualCarHandleType[_this.data.residualCarAndSaleMultiIndex[0]].code
           // let SaleType = DealType != "BF" ? _this.data.saleType[_this.data.residualCarAndSaleMultiIndex[1]].code : ''
           let param = {
@@ -1001,7 +1042,7 @@ Page({
             "DealType": DealType,
             "SaleType": SaleType,
             "WH_ID": _this.data.storeList[_this.data.storeAndTypeMultiIndex[0]].WH_ID,
-            "WHB_ID": _this.data.storeTypeList[_this.data.storeAndTypeMultiIndex[1]].WHB_Code,
+            "WHB_ID": _this.data.storeTypeList[_this.data.storeAndTypeMultiIndex[1]].WHB_ID,
             "ScanTime": _this.data.basicInfo.ScanTime,
             "OpenID": wx.getStorageSync('openId'),
             "Vin": _this.data.searchValue,
@@ -1014,9 +1055,11 @@ Page({
             _this.setData({
               loadModal:false,
               movableAreaShow:false,
+              saveStructureList:[],//清除上次的选中数据
               TabCur:0,
               TemplateCode:'',//清除上次模板选择弹窗的记录
-              check: false//清除上次模板选择弹窗的选中状态
+              check: false,//清除上次模板选择弹窗的选中状态
+              searchValue:''//清除搜索框的车架号
             })
             Toast.success("提交成功")
           })

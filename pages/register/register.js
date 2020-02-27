@@ -179,6 +179,12 @@ Page({
       "encryptedData": app.globalData.encryptedData,
       "iv": app.globalData.iv,
     }
+    if (app.globalData.loginInfo.isRegister&&!this.data.isCertification){
+      certification(_this)
+    }
+    // getCustomInfo().catch(()=>{
+    //   certification(_this)
+    // })
     if (wx.getStorageSync("session_key")) {
       paramObj.session_key = wx.getStorageSync("session_key")
       ajax.post("/api/WX/Decrypt", paramObj).then(res => {
@@ -196,7 +202,8 @@ Page({
           }
 
         } else {
-          console.log("解码unionId失败")
+          Toast.fail("解码unionId失败")
+          // console.log("解码unionId失败")
         }
       })
 

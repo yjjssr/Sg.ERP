@@ -62,6 +62,11 @@ App({
                               _this.unionIdReadyCallback(_this.globalData)
                             }
                           } else {
+                            wx.showToast({
+                              title: res.data,
+                              icon: 'none',
+                              duration: 2000
+                            })
                             console.log("解码unionId失败")
                           }
                         })
@@ -71,18 +76,30 @@ App({
                 }
               })
             } else {
+              wx.showToast({
+                title: res.data,
+                icon: 'none',
+                duration: 2000
+              })
               console.log("获取openId失败")
             }
           })
         } else {
+          wx.showToast({
+            title: "获取code失败",
+            icon: 'none',
+            duration: 2000
+          })
           console.log("获取code失败")
         }
       }
     })
   },
   checkSession: function() {
+    
     wx.checkSession({
       fail() {
+       
         wx.login({
           success(res) {
             if (res.code) {

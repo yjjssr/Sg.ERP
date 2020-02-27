@@ -48,6 +48,7 @@ Page({
    */
   onShow: function() {
     app.isReLaunchToIndex() //判断openId是否过期，如果过期跳转到index
+    this.onSerach()
   },
   // onReady() {
   //   this.setData({
@@ -89,19 +90,23 @@ Page({
   },
   onSerach: function() {
     let _this = this
+
     let param = _this.data.searchParam
     param.PageIndex = 1
+    _this.setData({
+      loadModal: true
+    })
     getVPOList(param).then(data => {
       if (data.length == 0) {
         Toast.fail("暂无数据")
         return
       }
       _this.setData({
-        previewList: data
+        previewList: data,
+        loadModal: false
       })
 
     })
-
   },
   onDetail(e) {
     let _this = this
@@ -129,7 +134,7 @@ Page({
       }
     })
 
-   
+
 
   }
 

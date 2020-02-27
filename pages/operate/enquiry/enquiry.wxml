@@ -15,14 +15,14 @@
         </view>
         <view class="cu-form-group">
           <view class="title">VIN码</view>
-          <input placeholder="请输入车辆VIN码或配件码" value="{{searchParam.VIN}}" bindinput="changeParam" data-key="VIN"></input>
+          <input placeholder="请输入车辆VIN码" value="{{searchParam.VIN}}" bindinput="changeParam" data-key="VIN"></input>
           <view bindtap="onVinScan">
             <van-icon name="scan" size="20" />
           </view>
         </view>
         <view class="cu-form-group">
           <view class="title">车牌号码</view>
-          <input placeholder="请输入配件名称" bindinput="changeParam" data-key="PlateNo"></input>
+          <input placeholder="请输入车牌号码" bindinput="changeParam" data-key="PlateNo"></input>
         </view>
         <view class="cu-form-group">
           <view class="title">询价时间</view>

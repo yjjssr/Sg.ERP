@@ -450,6 +450,7 @@ Page({
   },
   onSubmit(e) {
     let _this = this
+
     _this.setData({
       loadModal:true,
       isSubmit:true
@@ -522,10 +523,32 @@ Page({
           loadModal: false,
           isSubmit: false
         })
+       
         Toast.success({
           message: '新增成功',
           zIndex: 2000
         })
+        let timeAdd = setTimeout(() => {
+          //循环代码
+          wx.navigateBack({
+            success: function () {
+              clearTimeout(timeAdd)
+            }
+          })
+        }, 2000)
+        // let pages = getCurrentPages(); // 获取页面栈
+        // let prevPage = pages[pages.length - 2]; // 父级页面（返回上个页面）
+        // // 以此类推 pages.length - n
+        // prevPage.onSerach()
+        // let timeAdd = setTimeout(() => {
+        //   //循环代码
+        //   wx.navigateBack({
+        //     success: function () {
+        //       clearTimeout(timeAdd)
+        //     }
+        //   })
+        // }, 2000)
+        
       }).catch((data)=>{
         _this.setData({
           loadModal: false,

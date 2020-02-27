@@ -173,6 +173,8 @@ let getCustomInfo = function() {
         console.log("获取用户信息失败")
 
       }
+    }).catch(()=>{
+      
     })
   })
 
@@ -221,6 +223,7 @@ Page({
     }
   },
   onShow: function() {
+    
     app.checkSession()//这一步非常重要，不可删除 
   },
   NavChange(e) {
