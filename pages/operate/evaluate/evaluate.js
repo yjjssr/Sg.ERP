@@ -185,7 +185,8 @@ Page({
     // index: 0
     saveStructureList: [], //保存时所要用到的数组
     allCheckStatus: [], //底部全选的按钮的选中状态
-    TemplateCode: '' //所选择的模板的code
+    TemplateCode: '', //所选择的模板的code
+    errMessage:''
   },
   onLoad: function() {
     let _this = this
@@ -663,6 +664,10 @@ Page({
   },
   onDisaDetailSearch() { //过滤数据得到搜索结果
     let _this = this
+    _this.setData({
+      loadModal:true
+    })
+    
     let searchValue = _this.data.disaDetailSearchValue
     console.log("searchValue的值为:" + searchValue)
     let originalStructureList = _this.data.disaDetailObj.res
@@ -753,8 +758,10 @@ Page({
     _this.setData({
       copyedDisaStructureList: indexedFilterList,
       displayDisaDetailStructureTreeList,
-      sideBarActive: 0
+      sideBarActive: 0,
+      loadModal:false
     })
+    
     console.log("displayDisaDetailStructureTreeList的值为:")
     console.log(displayDisaDetailStructureTreeList)
 
@@ -777,27 +784,27 @@ Page({
 
   },
   callapseChange(e) {
-    this.setData({
-      loadModal:true,
-      callapseModal:true
-    })
-    let { displayDisaDetailStructureTreeList, sideBarActive } = this.data
+    // this.setData({
+    //   loadModal:true,
+    //   callapseModal:true
+    // })
+    
     let subCollapseActive = []
-    if (`${e.detail}`){
-      let levelOneList = displayDisaDetailStructureTreeList[sideBarActive]
-      let levelTwoList = levelOneList.children[e.detail]
-      let levelThreeList = levelTwoList.children
-      for (let i = 0; i < levelThreeList.length; i++) {
-        subCollapseActive.push(i)
-      }
-      // displayDisaDetailStructureTreeList[sideBarActive]
+    // let { displayDisaDetailStructureTreeList, sideBarActive } = this.data
+    // if (`${e.detail}`){
+    //   let levelOneList = displayDisaDetailStructureTreeList[sideBarActive]
+    //   let levelTwoList = levelOneList.children[e.detail]
+    //   let levelThreeList = levelTwoList.children
+    //   for (let i = 0; i < levelThreeList.length; i++) {
+    //     subCollapseActive.push(i)
+    //   }
       
-    }
+    // }
     this.setData({
       collapseActive: e.detail,
       subCollapseActive,
-      loadModal: false,
-      callapseModal: false
+      // loadModal: false,
+      // callapseModal: false
     });
   
     // console.log("collapse的当前值为:" + e.detail)
@@ -983,86 +990,91 @@ Page({
            
           //   return
           // }
-          let { residualCarAndSaleMultiIndex, residualCarAndSaleMultiArray } = _this.data
-          let DealType
-          let SaleType
-          if (residualCarAndSaleMultiIndex[0] == 0) {
-            DealType = residualCarAndSaleMultiArray[1][residualCarAndSaleMultiIndex[1]].code
-            SaleType = ""
-          } else {
-            DealType = residualCarAndSaleMultiArray[0][residualCarAndSaleMultiIndex[0]].code
-            SaleType = residualCarAndSaleMultiArray[1][residualCarAndSaleMultiIndex[1]].code
-          }
-          if (DealType != 'ZJBF' && DealType != 'PCBF') {
-            if (_this.data.saveStructureList.length == 0) {
-              _this.setData({
-                loadModal: false
-              })
-              Toast.fail({
-                message: '请至少勾选一条数据',
-                zIndex: 2000
-              })
+          try{
+            let { residualCarAndSaleMultiIndex, residualCarAndSaleMultiArray } = _this.data
+            let DealType
+            let SaleType
+            if (residualCarAndSaleMultiIndex[0] == 0) {
+              DealType = residualCarAndSaleMultiArray[1][residualCarAndSaleMultiIndex[1]].code
+              SaleType = ""
+            } else {
+              DealType = residualCarAndSaleMultiArray[0][residualCarAndSaleMultiIndex[0]].code
+              SaleType = residualCarAndSaleMultiArray[1][residualCarAndSaleMultiIndex[1]].code
+            }
+            if (DealType != 'ZJBF' && DealType != 'PCBF') {
+              if (_this.data.saveStructureList.length == 0) {
+                _this.setData({
+                  loadModal: false
+                })
+                Toast.fail({
+                  message: '请至少勾选一条数据',
+                  zIndex: 2000
+                })
 
-              return
-            }
-            if (_this.data.saveStructureList.some(item => !item.Price)) {
-              _this.setData({
-                loadModal: false
-              })
-              Toast.fail({
-                message: '价格不能为空或0',
-                zIndex: 2000
-              })
+                return
+              }
+              if (_this.data.saveStructureList.some(item => !item.Price)) {
+                _this.setData({
+                  loadModal: false
+                })
+                Toast.fail({
+                  message: '价格不能为空或0',
+                  zIndex: 2000
+                })
 
-              return
+                return
+              }
             }
-          }
-          let qList = _this.data.saveStructureList.map(item => {
-            let obj = {
-              APA_ID: '',
-              APN_Barcode: item.PieceCode,
-              APN_ID: '',
-              APN_Name: item.PieceName,
-              UnitCostPrice: item.Price,
-              UnitCostNumber: item.ValNum,
-              StatusCode: item.stateIndex||item.stateIndex==0 ? _this.data.statePickerArray[item.stateIndex].code:item.StateCode,
-            }
-            return obj
-          })
-          
-        
-         
-          // let DealType = _this.data.residualCarHandleType[_this.data.residualCarAndSaleMultiIndex[0]].code
-          // let SaleType = DealType != "BF" ? _this.data.saleType[_this.data.residualCarAndSaleMultiIndex[1]].code : ''
-          let param = {
-            "JsonText": JSON.stringify({
-              qList
-            }),
-            "Remark": _this.data.remark,
-            "DealType": DealType,
-            "SaleType": SaleType,
-            "WH_ID": _this.data.storeList[_this.data.storeAndTypeMultiIndex[0]].WH_ID,
-            "WHB_ID": _this.data.storeTypeList[_this.data.storeAndTypeMultiIndex[1]].WHB_ID,
-            "ScanTime": _this.data.basicInfo.ScanTime,
-            "OpenID": wx.getStorageSync('openId'),
-            "Vin": _this.data.searchValue,
-            "OrgID": wx.getStorageSync('orgId'),
-            "TemplateCode": _this.data.TemplateCode,
-          }
-         
-          updateVehicleValuationInfo(param).then(()=>{
-            
-            _this.setData({
-              loadModal:false,
-              movableAreaShow:false,
-              saveStructureList:[],//清除上次的选中数据
-              TabCur:0,
-              TemplateCode:'',//清除上次模板选择弹窗的记录
-              check: false,//清除上次模板选择弹窗的选中状态
-              searchValue:''//清除搜索框的车架号
+            let qList = _this.data.saveStructureList.map(item => {
+              let obj = {
+                APA_ID: '',
+                APN_Barcode: item.PieceCode,
+                APN_ID: '',
+                APN_Name: item.PieceName,
+                UnitCostPrice: item.Price,
+                UnitCostNumber: item.ValNum,
+                StatusCode: item.stateIndex || item.stateIndex == 0 ? _this.data.statePickerArray[item.stateIndex].code : item.StateCode,
+              }
+              return obj
             })
-            Toast.success("提交成功")
-          })
+            // let DealType = _this.data.residualCarHandleType[_this.data.residualCarAndSaleMultiIndex[0]].code
+            // let SaleType = DealType != "BF" ? _this.data.saleType[_this.data.residualCarAndSaleMultiIndex[1]].code : ''
+            let param = {
+              "JsonText": JSON.stringify({
+                qList
+              }),
+              "Remark": _this.data.remark,
+              "DealType": DealType,
+              "SaleType": SaleType,
+              "WH_ID": _this.data.storeList[_this.data.storeAndTypeMultiIndex[0]].WH_ID,
+              "WHB_ID": _this.data.storeTypeList[_this.data.storeAndTypeMultiIndex[1]].WHB_ID,
+              "ScanTime": _this.data.basicInfo.ScanTime,
+              "OpenID": wx.getStorageSync('openId'),
+              "Vin": _this.data.searchValue,
+              "OrgID": wx.getStorageSync('orgId'),
+              "TemplateCode": _this.data.TemplateCode,
+            }
+            
+            updateVehicleValuationInfo(param).then(() => {
+
+              _this.setData({
+                loadModal: false,
+                movableAreaShow: false,
+                saveStructureList: [],//清除上次的选中数据
+                TabCur: 0,
+                TemplateCode: '',//清除上次模板选择弹窗的记录
+                check: false,//清除上次模板选择弹窗的选中状态
+                searchValue: ''//清除搜索框的车架号
+              })
+              Toast.success("提交成功")
+            })
+          }catch(err){
+           _this.setData({
+            
+             errMessage: err.message
+           })
+            // Toast.fail(err.message)
+          }
         }
       }
     })
@@ -1101,7 +1113,8 @@ Page({
     let checkedStructure = copyedDisaStructureList.find(item => {
       return !item.Level && item.PieceCode == e.currentTarget.id
     })
-    checkedStructure.ValNum = e.detail.value
+    // checkedStructure.ValNum = e.detail.value
+    checkedStructure.ValNum = e.detail
     console.log(this.data.displayDisaDetailStructureTreeList)
 
 

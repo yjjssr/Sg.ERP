@@ -227,7 +227,9 @@ Component({
     }],
     cardCur: 0,
     swiperList: [{
-      url: '../../../images/swiper/back.jpg'
+      url: '../../../images/swiper/all.jpg'   
+    },{
+        url: '../../../images/swiper/back.jpg'
     }]
     
   },

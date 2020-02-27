@@ -10,7 +10,7 @@
         <image src="{{item.url}}" mode="aspectFill"></image>
       </view>
     </swiper-item>
-  </swiper>
+  </swiper>   
   <view class='nav-list'>
     <block wx:if="{{item.length!=0}}">
       <navigator open-type="navigate" hover-class='none' url="/pages/operate/{{item.name}}/{{item.name}}{{item.name=='enquiry'?item.query:''}}" class="nav-li bg-{{item.color}}" wx:for="{{elements}}" wx:key="index">

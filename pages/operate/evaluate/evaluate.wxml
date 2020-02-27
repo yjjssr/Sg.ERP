@@ -4,7 +4,7 @@
 </cu-custom>
 
 <!-- <scroll-view scroll-y class="scrollPage {{TabCur==2?'scrollPage-withTab':''}}"> -->
-  <view class="{{TabCur==2?'scrollPage-withTab':''}}">
+<view class="{{TabCur==2?'scrollPage-withTab':''}}">
   <movable-area wx:if="{{movableAreaShow}}" class="{{TabCur==2?'movable-area-BFC':'movable-area-block'}}">
     <scroll-view scroll-x class="bg-white nav" scroll-with-animation scroll-left="{{scrollLeft}}">
       <view class="flex text-center">
@@ -113,10 +113,10 @@
           <textarea maxlength="-1" bindinput="textareaBInput" placeholder="请输入" value="{{disaDetailObj.VVB_Remark}}"></textarea>
         </view>
         <view class="cu-form-group margin-top structureFromWrap">
-          <van-search value="{{ disaDetailSearchValue }}" bind:change="onDisaDetailChange" placeholder="请输入关键字" use-action-slot use-right-icon-slot shape="round" label="构件" custom-class="disaDetailWrap" left-icon="search">
-           <view slot="right-icon" class="searchRightIconWrap">
+          <van-search value="{{ disaDetailSearchValue }}" bind:change="onDisaDetailChange" placeholder="请输入关键字" use-action-slot use-right-icon-slot shape="round" custom-class="disaDetailWrap" left-icon="search">
+            <view slot="right-icon" class="searchRightIconWrap">
               <switch class="red sm disaDetailSwitch" bindchange="onDisDetailSwitchChange"></switch>
-           </view>
+            </view>
             <view slot="action" class="disaDetailSearchActionWrap">
               <view class="disaDetailSearch" bind:tap="onDisaDetailSearch">搜索</view>
             </view>
@@ -131,13 +131,41 @@
                   <view slot="icon">
                     <checkbox-group catchchange="checkAllSubStructure" id="{{item.StructureID}}" catchtap="preventBubble">
                       <label class="my-collapse-label">
-                        <checkbox class="round" value="{{true}}" checked="{{item.checkStatus}}" ></checkbox>
+                        <checkbox class="round" value="{{true}}" checked="{{item.checkStatus}}"></checkbox>
                       </label>
 
                     </checkbox-group>
                   </view>
-                  {{item.label}}的详细分类为:
-                  <van-collapse wx:if="{{item.children.length!=0}}" value="{{subCollapseActive}}" bind:change="subCallapseChange" id="{{item.StructureID}}">
+                  <view class="cu-list">
+                    <view class="cu-item three-level-list-item" wx:for="{{item.children}}" wx:key="index" wx:for-item="subItem">
+                      <checkbox-group catchchange="checkStructure" id="{{subItem.PieceCode}}" catchtap="preventBubble">
+                        <!-- <label class="my-collapse-label">
+                          <checkbox class="round" value="{{true}}" checked="{{subItem.checkStatus}}"></checkbox>
+                        </label> -->
+                        <label class="flex align-center">
+                          <checkbox class="round" value="{{true}}" checked="{{subItem.checkStatus}}"></checkbox>
+                          <view class="piece-name">{{subItem.PieceName}}</view>
+
+                        </label>
+
+                      </checkbox-group>
+                      <form>
+                
+                        <view class="cu-form-group flex  inline-form-group">
+                          
+                          <input class="inline-input" type="digit" placeholder="输入" disabled="{{subItem.StateCode=='YCJ'}}" value="{{subItem.Price||subItem.StateCode=='YCJ'?subItem.Price:''}}" bindinput="onPriceInput" id="{{subItem.PieceCode}}"></input>
+                          <van-stepper id="{{subItem.PieceCode}}" value="{{subItem.ValNum}}" disabled="{{subItem.StateCode=='YCJ'}}" bind:change="onNumriceInput" />
+                          <picker catchchange="statePickChange" value="{{subItem.stateIndex}}" range="{{statePickerArray}}" range-key="state" disabled="{{subItem.StateCode=='YCJ'}}" id="{{subItem.PieceCode}}">
+                            <view class="picker">{{subItem.StateCode=='YCJ'?'已拆':statePickerArray[subItem.stateIndex].state}}</view>
+                          </picker>
+                        </view>
+                      </form>
+                    </view>
+
+                  </view>
+
+                  <!-- {{item.label}}的详细分类为: -->
+                  <!-- <van-collapse wx:if="{{item.children.length!=0}}" value="{{subCollapseActive}}" bind:change="subCallapseChange" id="{{item.StructureID}}">
                     <van-collapse-item wx:for="{{item.children}}" wx:key="index" wx:for-item="subItem" title="{{subItem.PieceName}}">
                       <view slot="icon">
                         <checkbox-group catchchange="checkStructure" id="{{subItem.PieceCode}}" catchtap="preventBubble">
@@ -150,11 +178,11 @@
                       <form>
                         <view class="cu-form-group margin-top">
                           <view class="title">状态</view>
-                            <!-- stateIndex的值为:{{subItem.stateIndex}} -->
+                         
                           <picker catchchange="statePickChange" value="{{subItem.stateIndex}}" range="{{statePickerArray}}" range-key="state" disabled="{{subItem.StateCode=='YCJ'}}" id="{{subItem.PieceCode}}">
                             <view class="picker">{{subItem.StateCode=='YCJ'?'已拆':statePickerArray[subItem.stateIndex].state}}</view>
                           </picker>
-                          <!-- <input placeholder="三字标题"></input> -->
+                          
                         </view>
                         <view class="cu-form-group">
                           <view class="title">价格</view>
@@ -165,34 +193,15 @@
                           <input type="number" placeholder="请输入数量" disabled="{{subItem.StateCode=='YCJ'}}" value="{{subItem.ValNum}}" bindinput="onNumriceInput" id="{{subItem.PieceCode}}"></input>
                         </view>
                       </form>
-                      <!-- {{subItem.PieceName}} -->
+                      
                     </van-collapse-item>
 
-                  </van-collapse>
+                  </van-collapse> -->
                 </van-collapse-item>
-                <!-- <van-collapse-item>
-                  <view slot="value">
-                    <checkbox-group catchchange="checkboxChange">
-                    
-                      <label class="checkbox">
-                       <checkbox value="{{'1'}}" class="round"></checkbox>全选
-                      
-                      </label>
-                    </checkbox-group>
-                   
-                  </view>
-                  <view slot="title">
-                    {{"啦啦啦啦"}}
-                    <van-icon name="question-o" custom-class="van-icon-question" />
-                  </view>
-                  {{ "djfjdjfld" }}
-                </van-collapse-item>
-                <van-collapse-item title="标题二" value="内容" icon="shop-o" label="标题二描述一下">
-                  标题二内容
-                </van-collapse-item> -->
+
               </van-collapse>
             </view>
-            <!-- <view style="height:1000px;"></view> -->
+
           </view>
 
         </view>
@@ -286,9 +295,9 @@
 <view class='cu-load load-modal' wx:if="{{loadModal}}">
   <!-- <view class='cuIcon-emojifill text-orange'></view> -->
   <!-- <image src='/images/logo.png' class='png' mode='aspectFit'></image> -->
-  <view class='gray-text' wx:if="{{callapseModal}}">展开中...</view>
+  <view class='gray-text' wx:if="{{errMessage}}">{{errMessage}}</view>
   <view class='gray-text' wx:else>加载中...</view>
-  
+
 </view>
 
 

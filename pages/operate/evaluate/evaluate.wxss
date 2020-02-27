@@ -26,9 +26,9 @@ movable-view {
 
 /* 去除搜索图标 */
 
-.van-icon-search {
+/* .van-icon-search {
   font-size: 0 !important;
-}
+} */
 
 .icon {
   background-color: #07c160;
@@ -119,4 +119,58 @@ margin-right: 30rpx;
   padding:0 30rpx;
   color: var(--cell-text-color,#323233);
 
+}
+
+.three-level-list-item{
+  padding: 0 10rpx;
+min-height: 100rpx;
+background-color: var(--white);
+border-bottom: 1px solid #ddd;
+padding-bottom: 10rpx;
+}
+.three-level-list-item:not(:first-child){
+  padding-top: 30rpx;
+}
+.piece-name{
+  padding: 0 10rpx;
+}
+.inline-form-group{
+  min-height: 60rpx;
+  padding:0;
+  margin-top: 10rpx;
+
+}
+.cu-form-group picker{
+  min-width:100rpx; 
+  /* flex:1.5; */
+}
+.cu-form-group picker::after{
+  line-height:60rpx;
+  right: -10rpx;
+ 
+}
+.cu-form-group picker .picker{
+  line-height:60rpx;
+}
+.cu-form-group input.inline-input{
+  padding-left: 26rpx;
+  position: relative;
+  line-height: 60rpx;
+  height: 60rpx;
+  min-height: 60rpx;
+  min-width: 100rpx;
+}
+.cu-form-group input.inline-input::before{
+  
+  color: var(--red);
+  position: absolute;
+  left: 0;
+  /* left: 10rpx; */
+  content: '¥';
+  /* height:90rpx; */
+  line-height: 60rpx;
+  box-sizing: border-box;
+}
+.cu-modal{
+  z-index: 10000;
 }

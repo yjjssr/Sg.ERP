@@ -33,7 +33,8 @@
     "van-collapse": "/miniprogram_npm/@vant/weapp/collapse/index",
     "van-collapse-item": "/miniprogram_npm/@vant/weapp/collapse-item/index",
     "van-field": "/miniprogram_npm/@vant/weapp/field/index",
-    "van-sticky": "/miniprogram_npm/@vant/weapp/sticky/index"
+    "van-sticky": "/miniprogram_npm/@vant/weapp/sticky/index",
+    "van-stepper":"/miniprogram_npm/@vant/weapp/stepper/index"
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json"
