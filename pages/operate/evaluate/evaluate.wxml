@@ -95,15 +95,29 @@
           <view class="title">处理方式</view>
           <picker mode="multiSelector" bindchange="MultiChange" bindcolumnchange="MultiColumnChange" value="{{residualCarAndSaleMultiIndex}}" range="{{residualCarAndSaleMultiArray}}" range-key="name">
             <view class="picker">
-              {{residualCarAndSaleMultiArray[0][residualCarAndSaleMultiIndex[0]].name}}{{residualCarAndSaleMultiArray[1].length!=0?",":""}}{{residualCarAndSaleMultiArray[1].length!=0?residualCarAndSaleMultiArray[1][residualCarAndSaleMultiIndex[1]].name:""}}
+          
+            <block wx:if="{{disaDetailObj.VVB_TypeCode}}">
+             {{residualCarAndSaleMultiArray[0][residualCarAndSaleMultiIndex[0]].name}}{{residualCarAndSaleMultiArray[1].length!=0?",":""}}{{residualCarAndSaleMultiArray[1].length!=0?residualCarAndSaleMultiArray[1][residualCarAndSaleMultiIndex[1]].name:""}}
+            </block>
+            <block wx:else>
+            请选择
+            </block>
+             
             </view>
           </picker>
         </view>
         <view class="cu-form-group">
-          <view class="title">仓库</view>
+          <view class="title">仓库仓位</view>
           <picker mode="multiSelector" bindchange="StoreTypeMultiChange" bindcolumnchange="StoreTypeMultiColumnChange" value="{{storeAndTypeMultiIndex}}" range="{{storeAndTypeMultiArray}}" range-key="{{'WH_Name'}}">
             <view class="picker">
-              {{storeAndTypeMultiArray[0][storeAndTypeMultiIndex[0]].WH_Name}}{{storeAndTypeMultiArray[1].length!=0?",":""}}{{storeAndTypeMultiArray[1].length!=0?storeAndTypeMultiArray[1][storeAndTypeMultiIndex[1]].WH_Name:""}}
+              
+              <block wx:if="{{disaDetailObj.VVB_Warehouse}}">
+               {{storeAndTypeMultiArray[0][storeAndTypeMultiIndex[0]].WH_Name}}{{storeAndTypeMultiArray[1].length!=0?",":""}}{{storeAndTypeMultiArray[1].length!=0?storeAndTypeMultiArray[1][storeAndTypeMultiIndex[1]].WH_Name:""}}
+              </block>
+              <block wx:else>
+              请选择
+              </block>
+             
             </view>
           </picker>
         </view>
@@ -123,7 +137,7 @@
           </van-search>
           <view class="sidebarWrap">
             <van-sidebar active-key="{{ sideBarActive }}" bind:change="sideBarChange" custom-class="my-sidebar">
-              <van-sidebar-item wx:for="{{displayDisaDetailStructureTreeList}}" title="{{item.label}}" wx:key="index" />
+              <van-sidebar-item wx:for="{{displayDisaDetailStructureTreeList}}" title="{{item.label}}" wx:key="index" info="{{item.dckInfo}}"/>
             </van-sidebar>
             <view class="my-collapse-wrap">
               <van-collapse value="{{collapseActive}}" bind:change="callapseChange" accordion>
@@ -142,9 +156,13 @@
                         <!-- <label class="my-collapse-label">
                           <checkbox class="round" value="{{true}}" checked="{{subItem.checkStatus}}"></checkbox>
                         </label> -->
-                        <label class="flex align-center">
+                        <label class="flex align-center justify-between" style="flex:1;">
+                          <view style="display:flex;align-items:center;">
                           <checkbox class="round" value="{{true}}" checked="{{subItem.checkStatus}}"></checkbox>
                           <view class="piece-name">{{subItem.PieceName}}</view>
+                          </view>
+                          <view wx:if="{{subItem.StateCode=='YCJ'||subItem.StateCode=='DCK'}}" class="cu-tag bg-orange">已评估</view>
+                          
 
                         </label>
 
@@ -209,12 +227,14 @@
 
       </form>
       <view class="cu-bar tabbar bg-white shadow foot">
-        <view class="action">
+       
+        <view class="action" style="display:flex;">
           <!-- <view class='cuIcon-cu-image'>
             <image src="/images/tabbar/basics{{PageCur=='basics'?'_cur':''}}.png"></image>
           </view> -->
-
+          <view class="text-price text-red text-xxl">{{totalPrice}}</view>
           <checkbox-group catchchange="checkAllStructure">
+        
             <label class="my-tabbar-label">
               <view class="my-tabbar-label-text">全选</view>
               <checkbox class="round" value="{{true}}" checked="{{allCheckStatus[sideBarActive]}}"></checkbox>

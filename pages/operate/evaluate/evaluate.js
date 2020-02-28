@@ -112,6 +112,7 @@ let updateVehicleValuationInfo = function(param) {
   
 
 }
+
 Page({
 
   /**
@@ -186,7 +187,8 @@ Page({
     saveStructureList: [], //保存时所要用到的数组
     allCheckStatus: [], //底部全选的按钮的选中状态
     TemplateCode: '', //所选择的模板的code
-    errMessage:''
+    errMessage:'',
+    totalPrice:0,//总价格
   },
   onLoad: function() {
     let _this = this
@@ -447,6 +449,24 @@ Page({
       let copyedDisaStructureList = JSON.parse(JSON.stringify(res.res)) //复制返回的数组
       let indexedDisaStructureList = getDisplayTreeList(copyedDisaStructureList, _this.data.statePickerArray) //为数组添加picker下标
       let treeList = Tools.parseTreeData(indexedDisaStructureList, "StructureID", "ParentID", "StructureName") //将数组解析为树形    
+      for (let levelOne of treeList) {
+        let dckNumber = 0
+        if (levelOne.children.length != 0) {
+          for (let levelTwo of levelOne.children) {
+            if (levelTwo.children.length != 0) {
+              let levelThree = levelTwo.children
+              dckNumber = levelThree.reduce(function (prev, cur, index, arr) {
+                return cur.StateCode == 'DCK' ? ++prev : prev;
+             }, dckNumber)
+              // dckNumber += number
+            }
+          }
+
+        }
+        levelOne.dckInfo = dckNumber
+
+      }
+      
       // let treeList = Tools.parseTreeData(res.res, "StructureID", "ParentID", "StructureName")
       _this.setData({
         disaDetailObj: res,
@@ -480,7 +500,10 @@ Page({
       //     break;
       //   }
       // }
-      
+      // _this.setData({
+      //   "disaDetailObj.VVB_TypeCode":"",
+      //   "disaDetailObj.VVB_Warehouse":""
+      // })
       if (_this.data.disaDetailObj.VVB_TypeCode){
         if ("RK" != _this.data.disaDetailObj.VVB_TypeCode) {//残车处理方式一级为入库时
           handleTypeIndex[0] = 0
@@ -576,14 +599,15 @@ Page({
   // }
   MultiColumnChange(e) {
     let _this = this
-    let data = {
-      residualCarAndSaleMultiArray: this.data.residualCarAndSaleMultiArray,
-      residualCarAndSaleMultiIndex: this.data.residualCarAndSaleMultiIndex
-    }
-    data.residualCarAndSaleMultiIndex[e.detail.column] = e.detail.value
+    // let data = {
+    //   residualCarAndSaleMultiArray: this.data.residualCarAndSaleMultiArray,
+    //   residualCarAndSaleMultiIndex: this.data.residualCarAndSaleMultiIndex
+    // }
+    let { residualCarAndSaleMultiArray, residualCarAndSaleMultiIndex}=_this.data
+    residualCarAndSaleMultiIndex[e.detail.column] = e.detail.value
     switch (e.detail.column) {
       case 0:
-        data.residualCarAndSaleMultiIndex[1] = 0
+       residualCarAndSaleMultiIndex[1] = 0
         // switch (data.residualCarAndSaleMultiIndex[0]) {
         //   case 0:
         //     data.residualCarAndSaleMultiArray[1] = []
@@ -595,50 +619,83 @@ Page({
         // }
         switch (e.detail.value) {
           case 0:
-            data.residualCarAndSaleMultiArray[1] = _this.data.scrapType
+            residualCarAndSaleMultiArray[1] = _this.data.scrapType
             break;
           case 1:
             // let saleTypeArray = _this.data.saleType.map(item => item.name)
-            data.residualCarAndSaleMultiArray[1] = _this.data.saleType
+            residualCarAndSaleMultiArray[1] = _this.data.saleType
             break;
         }
+       
+       
     }
-    this.setData(data)
+    _this.setData({
+      residualCarAndSaleMultiIndex,
+      residualCarAndSaleMultiArray
+
+    })
+    // this.setData(data)
   },
   MultiChange(e) {
+    let { residualCarAndSaleMultiArray, residualCarAndSaleMultiIndex, disaDetailObj}=this.data
+    if (residualCarAndSaleMultiIndex[0] == 0) {
+      disaDetailObj.VVB_TypeCode = residualCarAndSaleMultiArray[1][residualCarAndSaleMultiIndex[1]].code 
+    } else {
+      disaDetailObj.VVB_TypeCode = residualCarAndSaleMultiArray[0][residualCarAndSaleMultiIndex[0]].code
+    }
+    
     this.setData({
-      residualCarAndSaleMultiIndex: e.detail.value
+     
+      residualCarAndSaleMultiIndex: e.detail.value,
+      disaDetailObj
     })
   },
   StoreTypeMultiColumnChange(e) {
     let _this = this
-    let data = {
-      storeAndTypeMultiArray: this.data.storeAndTypeMultiArray,
-      storeAndTypeMultiIndex: this.data.storeAndTypeMultiIndex
-    }
-    data.storeAndTypeMultiIndex[e.detail.column] = e.detail.value
+    // let data = {
+    //   storeAndTypeMultiArray: this.data.storeAndTypeMultiArray,
+    //   storeAndTypeMultiIndex: this.data.storeAndTypeMultiIndex
+    // }
+    let { storeAndTypeMultiArray, storeAndTypeMultiIndex}=_this.data
+    storeAndTypeMultiIndex[e.detail.column] = e.detail.value
     if (e.detail.column == 0) {
-      data.storeAndTypeMultiIndex[1] = 0
+      storeAndTypeMultiIndex[1] = 0
       queryStoreType({
-        WB_ID: data.storeAndTypeMultiArray[0][e.detail.value].WH_ID
+        WB_ID: storeAndTypeMultiArray[0][e.detail.value].WH_ID
       }).then(res => {
         _this.setData({
           storeTypeList: res
         })
+     
         let storeTypeList = _this.data.storeTypeList.map(item => {
           item.WH_Name = item.WHB_Name
           return item
         })
-        data.storeAndTypeMultiArray = [data.storeAndTypeMultiArray[0], storeTypeList]
-        _this.setData(data)
-      })
+        storeAndTypeMultiArray[1] = storeTypeList
+        _this.setData({//array的赋值只能放在这，否则容易因为异步的问题导致出现自己不想要的结果
+          storeAndTypeMultiArray
+        })
+        // storeAndTypeMultiArray = [storeAndTypeMultiArray[0], storeTypeList]
+        // _this.setData(data)
+       
+      })  
     }
+  
+    _this.setData({
+      storeAndTypeMultiIndex
+    
+    })
+    
 
 
   },
   StoreTypeMultiChange(e) {
+    let { disaDetailObj, storeAndTypeMultiArray, storeAndTypeMultiIndex}=this.data
+    disaDetailObj.VVB_Warehouse=storeAndTypeMultiArray[0][storeAndTypeMultiIndex[0]].WH_ID
     this.setData({
-      storeAndTypeMultiIndex: e.detail.value
+     
+      storeAndTypeMultiIndex: e.detail.value,
+      disaDetailObj
     })
   },
   textareaBInput(e) {
@@ -685,7 +742,8 @@ Page({
     if (_this.data.disDetailSwitchValue) { //当已评估按钮打开时搜索时应该不包含未评估的选项，否则应该包含未评估和已评估两种情况
       new_copyedDisaStructureList = [...new_copyedDisaStructureList].filter(item => {
         if (!item.Level) {
-          return item.StateCode != 'WPG'
+          // return item.StateCode != 'WPG'
+          return item.StateCode == 'YCJ' || item.StateCode == 'DCK'
         }
         return true
 
@@ -845,6 +903,15 @@ Page({
 
         }
       }
+      let unionArray = []
+      let map = {}
+      for (let item of saveStructureList) {
+        if (!map[item.PieceCode]) {
+          map[item.PieceCode] = true
+          unionArray.push(item)
+        }
+      }
+      saveStructureList = unionArray
       console.log("添加时")
       console.log(saveStructureList)
     } else { //为非选中状态
@@ -857,7 +924,16 @@ Page({
       console.log(saveStructureList)
 
     }
+    let totalPrice = 0
+    for (let item of saveStructureList) {
+      if (item.Price) {
+        totalPrice += item.Price * item.ValNum
+      }
+
+    }
+
     _this.setData({
+      totalPrice,
       saveStructureList,
       displayDisaDetailStructureTreeList
     })
@@ -888,6 +964,17 @@ Page({
       } else {
         saveStructureList = array
       }
+      // 数组去重
+      let unionArray = []
+      let map = {}
+      for (let item of saveStructureList) {
+        if (!map[item.PieceCode]) {
+          map[item.PieceCode] = true
+          unionArray.push(item)
+        }
+      }
+      saveStructureList = unionArray
+
       console.log("添加时")
       console.log(saveStructureList)
       console.log(saveStructureList.length)
@@ -917,8 +1004,21 @@ Page({
       console.log(saveStructureList)
       console.log(saveStructureList.length)
     }
+    
+   
+   
+   
 
+    
+    let totalPrice=0
+    for (let item of saveStructureList) {
+      if (item.Price) {
+        totalPrice += item.Price * item.ValNum
+      }
+
+    }
     _this.setData({
+      totalPrice,
       saveStructureList,
       displayDisaDetailStructureTreeList //因为由copyedDisaStructureList解析而来并且对象之间通过指针
     })
@@ -956,9 +1056,19 @@ Page({
       console.log(saveStructureList)
       console.log(saveStructureList.length)
     }
+    // let {totalPrice}=_this.data
+    let totalPrice=0
+    for (let item of saveStructureList){
+      if (item.Price){
+        totalPrice += item.Price * item.ValNum
+      }
+
+    }
+
     _this.setData({
       saveStructureList,
-      displayDisaDetailStructureTreeList
+      displayDisaDetailStructureTreeList,
+      totalPrice
     })
 
 
@@ -974,7 +1084,8 @@ Page({
       success: res => {
         if (res.confirm) {
           _this.setData({
-            loadModal:true
+            loadModal:true,
+            errMessage:''
           })
           // let test1 = _this.data.statePickerArray
           // let test2 = _this.data.saveStructureList
@@ -991,7 +1102,27 @@ Page({
           //   return
           // }
           try{
-            let { residualCarAndSaleMultiIndex, residualCarAndSaleMultiArray } = _this.data
+            let { residualCarAndSaleMultiIndex, residualCarAndSaleMultiArray, disaDetailObj} = _this.data
+            if (!disaDetailObj.VVB_TypeCode){
+              _this.setData({
+                loadModal: false
+              })
+              Toast.fail({
+                message: '请选择处理方式',
+                zIndex: 2000
+              })
+              return
+            }
+            if (!disaDetailObj.VVB_Warehouse) {
+              _this.setData({
+                loadModal: false
+              })
+              Toast.fail({
+                message: '请选择仓库仓位',
+                zIndex: 2000
+              })
+              return
+            }
             let DealType
             let SaleType
             if (residualCarAndSaleMultiIndex[0] == 0) {
@@ -1104,18 +1235,39 @@ Page({
       return !item.Level && item.PieceCode == e.currentTarget.id
     })
     checkedStructure.Price = e.detail.value
-    console.log(this.data.displayDisaDetailStructureTreeList)
+    let totalPrice = 0
+    for (let item of copyedDisaStructureList){
+    
+      if (item.checkStatus&&item.Price) {
+        totalPrice += item.Price * item.ValNum
+      }
+    }
+    this.setData({
+      totalPrice
+    })
+    // console.log(this.data.displayDisaDetailStructureTreeList)
+    // console.log(this.data.copyedDisaStructureList)
+    // console.log(this.data.saveStructureList)
 
   },
   onNumriceInput(e) {
-
     let copyedDisaStructureList = this.data.copyedDisaStructureList
     let checkedStructure = copyedDisaStructureList.find(item => {
       return !item.Level && item.PieceCode == e.currentTarget.id
     })
     // checkedStructure.ValNum = e.detail.value
     checkedStructure.ValNum = e.detail
-    console.log(this.data.displayDisaDetailStructureTreeList)
+    let totalPrice = 0
+    for (let item of copyedDisaStructureList) {
+      if (item.checkStatus&&item.Price) {
+        totalPrice += item.Price * item.ValNum
+      }
+    }
+    this.setData({
+      totalPrice
+    })
+    // console.log(this.data.displayDisaDetailStructureTreeList)
+    // console.log(this.data.saveStructureList)
 
 
   }
